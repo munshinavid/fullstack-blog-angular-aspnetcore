@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {AddCategoryRequest } from "../models/category.model";  
+import { HttpClient, httpResource } from '@angular/common/http';
+import {AddCategoryRequest, Category } from "../models/category.model";  
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,13 @@ export class CategoryServices {
 
   addCategory(categoryData: AddCategoryRequest) {
     return this.http.post<void>(`${this.apiUrl}/api/categories`, categoryData);
+  }
+
+  getAllCategories() {
+    // return this.http.get(`${this.apiUrl}/api/categories`);
+    const response= httpResource<Category[]>(() => `${this.apiUrl}/api/categories`);
+    console.log(response);
+    return response;
   }
 
   

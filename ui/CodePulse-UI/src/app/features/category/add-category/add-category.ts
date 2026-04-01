@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AddCategoryRequest } from '../models/category.model';
 import { CategoryServices } from '../services/category-services';
 
@@ -11,6 +11,11 @@ import { CategoryServices } from '../services/category-services';
   styleUrl: './add-category.css',
 })
 export class AddCategory {
+  // আধুনিক নিয়মে inject ব্যবহার করলে কনস্ট্রাক্টর ক্লিন থাকে
+  private categoryServices = inject(CategoryServices);
+  private router = inject(Router); // ২. রাউটার ইনজেক্ট করুন
+
+
   categoryForm = new FormGroup({
     categoryName: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(5)] }),
     categoryUrl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(2)] }),
@@ -23,9 +28,6 @@ export class AddCategory {
   get categoryUrl() {
     return this.categoryForm.get('categoryUrl');
   }
-
-  constructor(private categoryServices: CategoryServices) {}
-
   onSubmit() {
     if (this.categoryForm.valid) {
       const categoryData = this.categoryForm.getRawValue();
@@ -40,6 +42,7 @@ export class AddCategory {
         next: () => {
           console.log('Category added successfully');
           // Here you can add logic to navigate to another page or show a success message
+          this.router.navigate(['/admin/categories']);
         },
         error: (error) => {
           console.error('Error adding category:', error);

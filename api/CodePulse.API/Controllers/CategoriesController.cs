@@ -38,5 +38,17 @@ namespace CodePulse.API.Controllers
             //return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, categoryResponseDto);
             return Ok(categoryResponseDto);
         }
+
+        //get all categories
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            //what happein here explain the code in detail
+            //we call the GetAllCategoriesAsync() method of the category repository to get all categories from the database.
+            //This method returns an IEnumerable<Category>, which is a collection of Category objects.
+            var categories = await categoryRepository.GetAllCategoriesAsync();
+            var categoryDtos = _mapper.Map<List<CategoryDto>>(categories);
+            return Ok(categoryDtos);
+        }
     }
 }

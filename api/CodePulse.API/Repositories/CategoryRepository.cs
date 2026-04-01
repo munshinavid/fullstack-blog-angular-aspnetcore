@@ -28,9 +28,11 @@ namespace CodePulse.API.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            throw new NotImplementedException();
+            // we can use the ToListAsync() method to convert the IQueryable<Category> to a List<Category>, which is an IEnumerable<Category>.
+            return await Task.FromResult(blogDbContext.Categories.AsEnumerable());
+
         }
 
         public Task<Category> GetCategoryByIdAsync(Guid id)

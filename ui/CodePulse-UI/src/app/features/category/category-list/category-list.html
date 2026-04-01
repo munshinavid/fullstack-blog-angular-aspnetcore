@@ -1,10 +1,56 @@
-<!-- create category list + add category button using bootstrap, move button to the right -->
 <div class="container mt-4">
-  <h2>Categories</h2>
-  <button class="d-flex justify-content-end btn btn-primary mb-3" [routerLink]="['/admin/categories/add']">Add Category</button>
-  <ul class="list-group">
-    <li class="list-group-item">Category 1</li>
-    <li class="list-group-item">Category 2</li>
-    <li class="list-group-item">Category 3</li>
-  </ul>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Categories</h2>
+    <a class="btn btn-primary" [routerLink]="['/admin/categories/add']">
+      Add Category
+    </a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      @if (isLoading()) {
+        <div class="text-center p-4">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2">Loading categories...</p>
+        </div>
+      } 
+      
+      @else if (isError()) {
+        <div class="alert alert-danger" role="alert">
+          <strong>Error!</strong> Failed to load categories. Please check your API.
+        </div>
+      } 
+      
+      @else {
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>URL Handle</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (category of categoryList(); track category.id) {
+              <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <td>{{ category.urlHandle }}</td>
+                <td class="text-end">
+                  <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/categories/edit', category.id]">Edit</a>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="text-center py-4 text-muted">
+                  No categories found.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
 </div>
