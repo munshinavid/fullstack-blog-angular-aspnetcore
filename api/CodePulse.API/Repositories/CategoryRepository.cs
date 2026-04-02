@@ -24,9 +24,14 @@ namespace CodePulse.API.Repositories
             return category;
         }
 
-        public Task DeleteCategoryAsync(Guid id)
+        public async Task DeleteCategoryAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var category = await blogDbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            if (category != null)
+            {
+                blogDbContext.Categories.Remove(category);
+                await blogDbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
@@ -52,5 +57,6 @@ namespace CodePulse.API.Repositories
                 await blogDbContext.SaveChangesAsync();
             }
         }
+
     }
 }

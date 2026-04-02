@@ -1,4 +1,4 @@
-import { Injectable, Signal } from '@angular/core';
+import { inject, Injectable, Signal } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
 import {AddCategoryRequest, Category, UpdateCategoryRequest } from "../models/category.model";  
 import { environment } from '../../../../environments/environment';
@@ -8,8 +8,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class CategoryServices {
   private apiUrl = environment.apiUrl; // Replace with your actual API URL
+  private http=inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   addCategory(categoryData: AddCategoryRequest) {
     return this.http.post<void>(`${this.apiUrl}/api/categories`, categoryData);
@@ -31,6 +32,11 @@ export class CategoryServices {
 
   updateCategory(id: string, categoryData: UpdateCategoryRequest) {
     return this.http.put<void>(`${this.apiUrl}/api/categories/${id}`, categoryData);
+  }
+
+  //delete category by id
+  deleteCategory(id: string) {
+    return this.http.delete<void>(`${this.apiUrl}/api/categories/${id}`);
   }
 
 }

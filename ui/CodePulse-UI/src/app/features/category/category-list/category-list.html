@@ -38,8 +38,15 @@
                 <td>{{ category.name }}</td>
                 <td>{{ category.urlHandle }}</td>
                 <td class="text-end">
-                  <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/categories/edit', category.id]">Edit</a>
-                </td>
+                  <div class="btn-group">
+                    <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/categories/edit', category.id]">
+                      Edit
+                    </a>
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(category.id.toString())">
+                      Delete
+                    </button>
+                  </div>
+              </td>
               </tr>
             } @empty {
               <tr>
