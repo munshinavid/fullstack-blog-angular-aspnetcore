@@ -13,5 +13,13 @@ export const routes: Routes = [
   {
     path: 'admin/categories/edit/:id',
     loadComponent: () => import('./features/category/edit-category/edit-category').then(m => m.EditCategory)
+  },
+  {
+    path: 'admin/blogposts',
+    loadComponent: () => import('./features/blogpost/blogpost-list/blogpost-list').then(m => m.BlogpostList)
+  },
+  {
+    path: 'admin/blogposts/add',
+    loadComponent: () => import('./features/blogpost/add-blogpost/add-blogpost').then(m => m.AddBlogPost)
   }
 ];

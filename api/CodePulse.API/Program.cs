@@ -22,6 +22,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Register repositories
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
 var app = builder.Build();
 
