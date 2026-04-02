@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
-import {AddCategoryRequest, Category } from "../models/category.model";  
+import {AddCategoryRequest, Category, UpdateCategoryRequest } from "../models/category.model";  
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -22,5 +22,15 @@ export class CategoryServices {
     return response;
   }
 
-  
+  //get category by id using signal
+  getCategoryById(id: () => string | undefined) {
+    const response= httpResource<Category>(() => `${this.apiUrl}/api/categories/${id()}`);
+    console.log(response);
+    return response;
+  }
+
+  updateCategory(id: string, categoryData: UpdateCategoryRequest) {
+    return this.http.put<void>(`${this.apiUrl}/api/categories/${id}`, categoryData);
+  }
+
 }

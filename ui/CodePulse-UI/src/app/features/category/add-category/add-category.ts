@@ -17,7 +17,7 @@ export class AddCategory {
 
 
   categoryForm = new FormGroup({
-    categoryName: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(5)] }),
+    categoryName: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(50)] }),
     categoryUrl: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(2)] }),
   });
 

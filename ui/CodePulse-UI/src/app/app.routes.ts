@@ -9,5 +9,9 @@ export const routes: Routes = [
   {
     path: 'admin/categories/add',
     component: AddCategory,
+  },
+  {
+    path: 'admin/categories/edit/:id',
+    loadComponent: () => import('./features/category/edit-category/edit-category').then(m => m.EditCategory)
   }
 ];

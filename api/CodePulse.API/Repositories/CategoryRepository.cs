@@ -1,5 +1,6 @@
 ﻿using CodePulse.API.Data;
 using CodePulse.API.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 //we deal Domain models in the repository layer, and we deal DTOs in the controller layer,
 //so we need to map the DTOs to the domain models in the controller layer, and then pass the domain models to the repository layer.
@@ -35,14 +36,21 @@ namespace CodePulse.API.Repositories
 
         }
 
-        public Task<Category> GetCategoryByIdAsync(Guid id)
+        public async Task<Category> GetCategoryByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await blogDbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
         }
 
-        public Task UpdateCategoryAsync(Category category)
+        public async Task UpdateCategoryAsync(Category category)
         {
-            throw new NotImplementedException();
+            var existingCategory = await blogDbContext.Categories.FirstOrDefaultAsync(x => x.Id == category.Id);
+            if (existingCategory != null)
+            {
+                existingCategory.Name = category.Name;
+                existingCategory.UrlHandle = category.UrlHandle;
+                await blogDbContext.SaveChangesAsync();
+            }
         }
     }
 }
