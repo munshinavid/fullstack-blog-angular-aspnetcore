@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { CreateBlogPostRequest } from '../models/blogpost.model';
+import { BlogPost, CreateBlogPostRequest } from '../models/blogpost.model';
 import { environment } from '../../../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +14,10 @@ export class BlogPostService {
     // এখানে তোমার API কল করার লজিক থাকবে, যেমন HttpClient ব্যবহার করে POST রিকোয়েস্ট পাঠানো
     // উদাহরণ:
     return this.http.post<void>(`${this.apiUrl}/api/blogposts`, blogPostData);
+  }
+
+  getAllBlogPosts(): HttpResourceRef<BlogPost[] | undefined> {
+    return httpResource<BlogPost[]>(() => `${this.apiUrl}/api/blogposts`);
   }
   
 }

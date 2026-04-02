@@ -1,0 +1,91 @@
+<div class="container mt-4 mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary fw-bold">Blog Posts</h2>
+    <a class="btn btn-primary shadow-sm" [routerLink]="['/admin/blogposts/add']">
+       Add New Blog Post
+    </a>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      
+      @if (isLoading()) {
+        <div class="text-center p-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-muted">Fetching blog posts...</p>
+        </div>
+      } 
+      
+      @else if (isError()) {
+        <div class="alert alert-danger m-3" role="alert">
+          <strong>Error!</strong> Could not load blog posts. Check your backend.
+        </div>
+      } 
+      
+      @else {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="ps-4" style="width: 100px;">Image</th>
+                <th>Title & Author</th>
+                <th>Published Date</th>
+                <th class="text-center">Status</th>
+                <th class="text-end pe-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (post of blogPostList(); track post.id) {
+                <tr>
+                  <td class="ps-4">
+                    <img [src]="post.featuredImgUrl" 
+                         [alt]="post.title" 
+                         class="rounded border shadow-xs"
+                         style="width: 70px; height: 45px; object-fit: cover;"
+                         onerror="this.src='https://via.placeholder.com/70x45?text=No+Img'">
+                  </td>
+
+                  <td>
+                    <div class="fw-bold text-dark">{{ post.title }}</div>
+                    <small class="text-muted">By: {{ post.author }}</small>
+                  </td>
+
+                  <td>
+                    <span class="text-secondary small">
+                      {{ post.publishedDate | date:'dd MMM, yyyy' }}
+                    </span>
+                  </td>
+
+                  <td class="text-center">
+                    @if (post.isVisible) {
+                      <span class="badge rounded-pill bg-success-subtle text-success border border-success">Visible</span>
+                    } @else {
+                      <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary">Hidden</span>
+                    }
+                  </td>
+
+                  <td class="text-end pe-4">
+                    <div class="btn-group">
+                      <a class="btn btn-sm btn-outline-dark" [routerLink]="['/admin/blogposts/edit', post.id]">
+                        Edit
+                      </a>
+                      <button class="btn btn-sm btn-outline-danger" (click)="deleteBlogPost(post.id.toString())">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center py-5 text-muted">
+                    <p class="mb-0">No blog posts found. Click "Add New Blog Post" to get started.</p>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

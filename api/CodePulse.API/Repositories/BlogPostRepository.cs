@@ -25,9 +25,10 @@ namespace CodePulse.API.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync()
+        public async Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(blogDbContext.BlogPosts.AsEnumerable());
+
         }
 
         public Task<BlogPost> GetBlogPostByIdAsync(Guid id)
