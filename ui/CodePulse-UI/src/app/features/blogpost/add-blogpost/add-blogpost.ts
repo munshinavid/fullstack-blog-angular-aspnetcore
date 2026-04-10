@@ -1,19 +1,51 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BlogPostService } from '../services/blogpost-service';
 import { CreateBlogPostRequest } from '../models/blogpost.model';
+import { MarkdownComponent } from 'ngx-markdown';
+import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 
 @Component({
   selector: 'app-add-blogpost',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule,NgxEditorModule],
   templateUrl: './add-blogpost.html',
   styleUrl: './add-blogpost.css'
 })
-export class AddBlogPost {
+export class AddBlogPost implements OnInit, OnDestroy {
   private blogPostService = inject(BlogPostService);
   private router = inject(Router);
+
+//ngOnInit এবং ngOnDestroy লাইফসাইকেল হ্যান্ডলার (যদি প্রয়োজন হয়)
+// টুলবারে কি কি বাটন থাকবে তা সেট করা
+  editor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
+  ngOnInit(): void {
+    this.editor = new Editor(); // এডিটর ইনিশিয়ালাইজ করা
+  }
+
+  // মেমোরি লিক বন্ধ করতে ডিস্ট্রয় করা জরুরি
+  ngOnDestroy(): void {
+    this.editor.destroy();
+  }
+
+  // তোমার ক্লাসের ভেতরে এটি যোগ করো
+  onImgError(event: any) {
+    // যদি ইমেজ লোড হতে না পারে, তবে একটি প্লেসহোল্ডার ইমেজ সেট করে দেবে
+    event.target.src = 'https://via.placeholder.com/400x200?text=Invalid+Image+URL';
+  }
+
 
   // বাটন লোডিং স্টেট হ্যান্ডেল করার জন্য
   isSubmitting = signal(false);
