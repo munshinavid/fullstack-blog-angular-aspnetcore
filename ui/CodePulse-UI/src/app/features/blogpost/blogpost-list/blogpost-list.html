@@ -32,6 +32,7 @@
                 <th>Published Date</th>
                 <th class="text-center">Status</th>
                 <th class="text-end pe-4">Actions</th>
+                <th style="width: 1px;"> Categories </th>
               </tr>
             </thead>
             <tbody>
@@ -74,11 +75,14 @@
                       </button>
                     </div>
                   </td>
-                </tr>
-              } @empty {
-                <tr>
-                  <td colspan="5" class="text-center py-5 text-muted">
-                    <p class="mb-0">No blog posts found. Click "Add New Blog Post" to get started.</p>
+                  <td>
+                    <div class="d-flex flex-wrap gap-1">
+                      @for (category of post.categories; track category.id) {
+                        <span class="badge rounded-pill bg-info-subtle text-info border border-info">
+                          {{ category.name }}
+                        </span>
+                      }
+                    </div>
                   </td>
                 </tr>
               }

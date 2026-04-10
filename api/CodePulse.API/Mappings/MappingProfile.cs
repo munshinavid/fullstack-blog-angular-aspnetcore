@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using CodePulse.API.Models.Domain;
 using CodePulse.API.Models.DTO;
 
@@ -12,7 +12,11 @@ namespace CodePulse.API.Mappings
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<UpdateCategoryRequestDto, Category>().ReverseMap();
             CreateMap<CreateBlogPostRequestDto, BlogPost>().ReverseMap();
-            CreateMap<BlogPost, BlogPostDto>().ReverseMap();
+
+            // BlogPost mapping - এখানে পরিবর্তনটি লক্ষ্য করুন
+            CreateMap<BlogPost, BlogPostDto>()
+                .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
+                    src.BlogPostCategories.Select(x => x.Category).ToList()));
             CreateMap<UpdateBlogPostRequestDto, BlogPost>().ReverseMap();
         }
     }

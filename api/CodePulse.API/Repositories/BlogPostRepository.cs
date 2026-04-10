@@ -1,5 +1,6 @@
 ﻿using CodePulse.API.Data;
 using CodePulse.API.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodePulse.API.Repositories
 {
@@ -16,7 +17,13 @@ namespace CodePulse.API.Repositories
             //blogPost.Id = Guid.NewGuid();
             await blogDbContext.BlogPosts.AddAsync(blogPost);
             await blogDbContext.SaveChangesAsync();
-            return blogPost;
+
+            // ২. এবার রিলেটেড ক্যাটাগরিগুলো লোড করুন (এটিই আসল ট্রিক)
+            // সরাসরি আইডি দিয়ে আবার ডাটাবেস থেকে কল করুন যেন Include কাজ করে
+            return await blogDbContext.BlogPosts
+                .Include(x => x.BlogPostCategories)
+                .ThenInclude(x => x.Category)
+                .FirstOrDefaultAsync(x => x.Id == blogPost.Id);
 
         }
 
@@ -27,8 +34,12 @@ namespace CodePulse.API.Repositories
 
         public async Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync()
         {
-            return await Task.FromResult(blogDbContext.BlogPosts.AsEnumerable());
-
+            //include category
+            return await blogDbContext.BlogPosts
+                .AsNoTracking()
+                .Include(x => x.BlogPostCategories)
+                .ThenInclude(x => x.Category)
+                .ToListAsync();
         }
 
         public Task<BlogPost> GetBlogPostByIdAsync(Guid id)

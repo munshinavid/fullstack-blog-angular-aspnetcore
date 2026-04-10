@@ -13,5 +13,8 @@
         public string UrlHandle { get; set; }
         public bool IsVisible { get; set; }
 
+        //Blog post can have multiple categories
+        public ICollection<BlogPostCategory> BlogPostCategories { get; set; }
+
     }
 }

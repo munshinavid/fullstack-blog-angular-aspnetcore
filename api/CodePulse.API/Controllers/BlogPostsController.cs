@@ -24,6 +24,11 @@ namespace CodePulse.API.Controllers
         public async Task<IActionResult> CreateBlogPost([FromBody] CreateBlogPostRequestDto requestDto)
         {
             var blogPost = mapper.Map<BlogPost>(requestDto);
+            blogPost.BlogPostCategories = requestDto.CategoryIds
+            .Select(categoryId => new BlogPostCategory
+            {
+                CategoryId = categoryId
+            }).ToList();
             var createdBlogPost = await blogPostRepository.CreateBlogPostAsync(blogPost);
             var blogPostResponseDto = mapper.Map<BlogPostDto>(createdBlogPost);
             return Ok(blogPostResponseDto);

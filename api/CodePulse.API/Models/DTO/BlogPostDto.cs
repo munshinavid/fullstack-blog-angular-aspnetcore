@@ -12,5 +12,8 @@
         public string FeaturedImgUrl { get; set; }
         public string UrlHandle { get; set; }
         public bool IsVisible { get; set; }
+
+        //send category as list of categorydto
+        public List<CategoryDto> Categories { get; set; }
     }
 }
