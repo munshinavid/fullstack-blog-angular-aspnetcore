@@ -65,5 +65,17 @@ namespace CodePulse.API.Controllers
             }
             return Ok(mapper.Map<BlogPostDto>(updated));
         }
+
+        //delete a blog post
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBlogPost(Guid id)
+        {
+            var deleted = await blogPostRepository.DeleteBlogPostAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

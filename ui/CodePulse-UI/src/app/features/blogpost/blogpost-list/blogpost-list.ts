@@ -22,19 +22,19 @@ export class BlogpostList {
 
   // ৩. ডিলিট মেথড
   deleteBlogPost(id: string) {
-    // if (confirm('Are you sure you want to delete this blog post?')) {
-    //   this.blogPostService.deleteBlogPost(id).subscribe({
-    //     next: () => {
-    //       // ৪. ডিলিট সফল হলে লিস্টটি রিলোড করা
-    //       this.blogPostRef.reload();
-    //       console.log('Post deleted successfully');
-    //     },
-    //     error: (err) => {
-    //       console.error('Error deleting post:', err);
-    //       alert('Failed to delete the post. Please try again.');
-    //     }
-    //   });
-    // }
+    if (confirm('Are you sure you want to delete this blog post?')) {
+      this.blogPostService.deleteBlogPost(id).subscribe({
+        next: () => {
+          // ৪. ডিলিট সফল হলে লিস্টটি রিলোড করা
+          this.blogPostRef.reload();
+          console.log('Post deleted successfully');
+        },
+        error: (err) => {
+          console.error('Error deleting post:', err);
+          alert('Failed to delete the post. Please try again.');
+        }
+      });
+    }
   }
 
 }
