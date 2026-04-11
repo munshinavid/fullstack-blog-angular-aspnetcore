@@ -19,5 +19,17 @@ export class BlogPostService {
   getAllBlogPosts(): HttpResourceRef<BlogPost[] | undefined> {
     return httpResource<BlogPost[]>(() => `${this.apiUrl}/api/blogposts`);
   }
+
+  getBlogPostById(id: () => string | undefined): HttpResourceRef<BlogPost | undefined> {
+    return httpResource<BlogPost>(() => `${this.apiUrl}/api/blogposts/${id()}`);
+  }
+
+  updateBlogPost(id: string, blogPostData: CreateBlogPostRequest) {
+    return this.http.put<void>(`${this.apiUrl}/api/blogposts/${id}`, blogPostData);
+  }
+
+  deleteBlogPost(id: string) {
+    return this.http.delete<void>(`${this.apiUrl}/api/blogposts/${id}`);
+  }
   
 }

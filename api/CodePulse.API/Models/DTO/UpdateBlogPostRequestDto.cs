@@ -11,5 +11,8 @@
         public string FeaturedImgUrl { get; set; }
         public string UrlHandle { get; set; }
         public bool IsVisible { get; set; }
+
+        //accept list of category ids
+        public List<Guid> CategoryIds { get; set; } = new();
     }
 }

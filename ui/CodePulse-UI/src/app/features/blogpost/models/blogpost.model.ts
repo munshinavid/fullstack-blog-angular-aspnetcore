@@ -13,6 +13,20 @@ export interface CreateBlogPostRequest {
   categoryIds: string[]; // যদি শুধু ক্যাটাগরি আইডি পাঠাতে চাও
 }
 
+export interface UpdateBlogPostRequest {
+  title: string;
+  description: string; // ব্যাকএন্ডে ShortDescription হলে এখানেও তাই দিও
+  content: string;
+  featuredImgUrl: string;
+  urlHandle: string;
+  author: string;
+  publishedDate: Date;
+  isVisible: boolean;
+  // categories: string[]; // যদি ক্যাটাগরি আইডি পাঠাতে চাও
+  categoryIds: string[]; // যদি শুধু ক্যাটাগরি আইডি পাঠাতে চাও
+}
+
+
 export interface BlogPost {
   id: string;
   title: string;

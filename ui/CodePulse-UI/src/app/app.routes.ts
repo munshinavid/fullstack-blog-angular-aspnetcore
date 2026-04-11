@@ -21,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'admin/blogposts/add',
     loadComponent: () => import('./features/blogpost/add-blogpost/add-blogpost').then(m => m.AddBlogPost)
+  },
+  {
+    path: 'admin/blogposts/edit/:id',
+    loadComponent: () => import('./features/blogpost/edit-blogpost/edit-blogpost').then(m => m.EditBlogpost)
   }
 ];
