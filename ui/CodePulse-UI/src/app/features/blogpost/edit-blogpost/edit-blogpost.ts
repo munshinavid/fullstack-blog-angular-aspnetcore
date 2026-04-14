@@ -1,10 +1,11 @@
-import { Component, inject, input, OnDestroy, OnInit, signal, effect } from '@angular/core';
+import { Component, ComponentRef, ViewChild, ViewContainerRef, inject, input, OnDestroy, OnInit, effect, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 import { BlogPostService } from '../services/blogpost-service';
 import { CategoryServices } from '../../category/services/category-services';
 import { UpdateBlogPostRequest } from '../models/blogpost.model';
+import { ImageSelector } from '../../../shared/components/image-selector/image-selector';
 
 @Component({
   selector: 'app-edit-blogpost',
@@ -29,6 +30,8 @@ export class EditBlogpost implements OnInit, OnDestroy {
   editor!: Editor;
   isSubmitting = signal(false);
   selectedCategoryIds: string[] = [];
+  @ViewChild('imageSelectorHost', { read: ViewContainerRef }) imageSelectorHost?: ViewContainerRef;
+  private imageSelectorRef: ComponentRef<ImageSelector> | null = null;
 
   toolbar: Toolbar = [
     ['bold', 'italic'],
@@ -135,5 +138,29 @@ export class EditBlogpost implements OnInit, OnDestroy {
 
   onImgError(event: any) {
     event.target.src = 'https://via.placeholder.com/400x200?text=Invalid+Image+URL';
+  }
+
+  openImageSelector() {
+    if (!this.imageSelectorHost || this.imageSelectorRef) {
+      return;
+    }
+    console.log('Opening image selector: url);');
+    this.imageSelectorHost.clear();
+    this.imageSelectorRef = this.imageSelectorHost.createComponent(ImageSelector);
+    this.imageSelectorRef.instance.imageSelected.subscribe((url) => this.onImageSelected(url));
+    this.imageSelectorRef.instance.closeModal.subscribe(() => this.closeImageSelector());
+  }
+
+  closeImageSelector() {
+    this.imageSelectorRef?.destroy();
+    this.imageSelectorRef = null;
+    this.imageSelectorHost?.clear();
+  }
+
+  onImageSelected(url: string) {
+    queueMicrotask(() => {
+      this.updateBlogPostForm.controls.featuredImgUrl.setValue(url);
+      this.closeImageSelector();
+    });
   }
 }

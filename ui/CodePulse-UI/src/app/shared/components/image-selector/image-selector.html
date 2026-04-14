@@ -1,0 +1,81 @@
+<div class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- 🔹 Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Select Featured Image</h5>
+        <button class="btn-close" (click)="close()"></button>
+      </div>
+
+      <!-- 🔥 Body -->
+      <div class="modal-body">
+
+        <!-- 👉 তোমার existing card এখানে -->
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex">
+
+              <!-- Gallery -->
+              <div class="col-8 pe-3 border-end">
+                <h6>Gallery</h6>
+                <div class="d-flex flex-wrap gap-2 overflow-auto" style="max-height: 400px;">
+                  @for (image of images(); track image.id) {
+                    <div class="position-relative" (click)="selectImage(image.url)" style="cursor: pointer;">
+                      <img [src]="image.url" class="img-thumbnail"
+                           style="width: 120px; height: 100px; object-fit: cover;">
+                      <div class="small text-truncate" style="max-width: 120px;">
+                        {{image.title}}
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Upload -->
+              <div class="col-4 ps-3">
+                <h6>Upload New Image</h6>
+
+                <form (ngSubmit)="uploadImage()">
+                  <div class="mb-3">
+                    <input type="file" class="form-control form-control-sm"
+                           (change)="onFileUploadChange($event)">
+                  </div>
+
+                  <div class="mb-3">
+                    <input type="text" class="form-control form-control-sm"
+                           [(ngModel)]="fileName" name="fileName"
+                           placeholder="File Name">
+                  </div>
+
+                  <div class="mb-3">
+                    <input type="text" class="form-control form-control-sm"
+                           [(ngModel)]="title" name="title"
+                           placeholder="Image Title">
+                  </div>
+
+                  <button type="submit"
+                          class="btn btn-primary btn-sm w-100"
+                          [disabled]="isUploading()">
+
+                    @if (isUploading()) { Uploading... }
+                    @else { Upload }
+
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 🔹 Footer (optional) -->
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="close()">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>

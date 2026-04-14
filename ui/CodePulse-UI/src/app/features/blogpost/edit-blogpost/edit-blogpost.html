@@ -8,6 +8,8 @@
 
   <div class="card shadow-sm border-0">
     <div class="card-body p-4">
+      <ng-container #imageSelectorHost></ng-container>
+
       @if (blogPost()) {
       <form [formGroup]="updateBlogPostForm" (ngSubmit)="onUpdateSubmit()">
 
@@ -36,6 +38,11 @@
         <div class="mb-3">
           <label class="form-label">Featured Image URL</label>
           <input type="text" class="form-control" formControlName="featuredImgUrl" placeholder="https://...">
+          <div class="mt-2">
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="openImageSelector()">
+              Select / Upload Image
+            </button>
+          </div>
           
           @if (updateBlogPostForm.controls.featuredImgUrl.value) {
             <div class="mt-3 text-center">

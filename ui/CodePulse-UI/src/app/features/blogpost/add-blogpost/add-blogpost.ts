@@ -6,11 +6,12 @@ import { CategoryServices } from '../../category/services/category-services';
 import { CreateBlogPostRequest } from '../models/blogpost.model';
 import { MarkdownComponent } from 'ngx-markdown';
 import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
+import { ImageSelector } from '../../../shared/components/image-selector/image-selector';
 
 @Component({
   selector: 'app-add-blogpost',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule,NgxEditorModule],
+  imports: [ReactiveFormsModule, RouterModule, NgxEditorModule, ImageSelector],
   templateUrl: './add-blogpost.html',
   styleUrl: './add-blogpost.css'
 })
@@ -20,6 +21,7 @@ export class AddBlogPost implements OnInit, OnDestroy {
   private categoryService = inject(CategoryServices);
   private router = inject(Router);
   selectedCategoryIds: string[] = [];
+  showImageSelector = signal(false);
 
   categoryRessourceRef = this.categoryService.getAllCategories();
   categoryList = this.categoryRessourceRef.value
@@ -51,6 +53,19 @@ export class AddBlogPost implements OnInit, OnDestroy {
   onImgError(event: any) {
     // যদি ইমেজ লোড হতে না পারে, তবে একটি প্লেসহোল্ডার ইমেজ সেট করে দেবে
     event.target.src = 'https://via.placeholder.com/400x200?text=Invalid+Image+URL';
+  }
+
+  openImageSelector() {
+    this.showImageSelector.set(true);
+  }
+
+  closeImageSelector() {
+    this.showImageSelector.set(false);
+  }
+
+  onImageSelected(url: string) {
+    this.addBlogPostForm.controls.featuredImgUrl.setValue(url);
+    this.showImageSelector.set(false);
   }
 
 
