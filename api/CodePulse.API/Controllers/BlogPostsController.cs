@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CodePulse.API.Repositories;
 using CodePulse.API.Models.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CodePulse.API.Controllers
 {
@@ -33,6 +34,7 @@ namespace CodePulse.API.Controllers
         }
         //get all blog posts
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllBlogPosts()
         {
             var blogPosts = await blogPostRepository.GetAllBlogPostsAsync();
