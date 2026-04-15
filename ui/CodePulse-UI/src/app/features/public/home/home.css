@@ -1,0 +1,21 @@
+/* কার্ডে হোভার এফেক্ট */
+.blog-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
+}
+
+/* টেক্সট যদি বেশি বড় হয় তবে ৩ লাইনের পর '...' দেখাবে */
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-title {
+    min-height: 3rem; /* টাইটেলগুলো যেন একই সমান লাইনের হয় */
+}

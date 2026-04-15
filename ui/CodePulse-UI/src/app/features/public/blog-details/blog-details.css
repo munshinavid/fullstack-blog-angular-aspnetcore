@@ -1,0 +1,30 @@
+/* কন্টেন্টের ভেতরের ইমেজগুলোকে রেসপন্সিভ করা */
+.blog-content ::ng-deep img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* লাইন হাইট এবং প্যারাগ্রাফ মার্জিন যেন পড়তে সুবিধা হয় */
+.blog-content {
+    color: #2c3e50;
+    line-height: 1.8;
+}
+
+.blog-content p {
+    margin-bottom: 1.5rem;
+}
+
+/* লিস্ট স্টাইল ঠিক করা */
+.blog-content ul, .blog-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+/* হেডিং স্টাইল কাস্টমাইজ করা */
+.blog-content h1, .blog-content h2, .blog-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}

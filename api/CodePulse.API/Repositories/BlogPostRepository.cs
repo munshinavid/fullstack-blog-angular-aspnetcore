@@ -75,6 +75,19 @@ namespace CodePulse.API.Repositories
             return result;
         }
 
+        public async Task<BlogPost> GetBlogPostByUrlHandleAsync(string urlHandle)
+        {
+            var result = await blogDbContext.BlogPosts
+                .AsNoTracking()
+                .Include(x => x.BlogPostCategories)
+                .ThenInclude(x => x.Category)
+                .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+            if (result == null) {
+                throw new Exception("Blog post not found.");
+            }
+            return result;
+        }
+
         public async Task<BlogPost?> UpdateBlogPostAsync(Guid id, BlogPost request, List<Guid> categoryIds)
         {
             // 🔹 1. Load existing with relations

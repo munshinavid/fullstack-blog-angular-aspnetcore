@@ -8,6 +8,9 @@
 
   <div class="card shadow-sm border-0">
     <div class="card-body p-4">
+      <!-- here Image selector Modal will be rendered dynamically when user clicks "Select / Upload Image" button.
+        It will emit the selected image URL back to this component, which will then update the featuredImgUrl form control with that URL,
+         allowing the user to see a preview of the selected image before submitting the form. -->
       <ng-container #imageSelectorHost></ng-container>
 
       @if (blogPost()) {

@@ -25,7 +25,7 @@ namespace CodePulse.API.Controllers
             }
 
             var image = await imageRepository.UploadAsync(request);
-            return Ok(image.Url);
+            return Ok(new {url= image.Url });
         }
 
         //et all images

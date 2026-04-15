@@ -52,6 +52,18 @@ namespace CodePulse.API.Controllers
             var blogPostDto = mapper.Map<BlogPostDto>(blogPost);
             return Ok(blogPostDto);
         }
+        //get blog post by url handle
+        [HttpGet("urlHandle/{urlHandle}")]
+        public async Task<IActionResult> GetBlogPostByUrlHandle(string urlHandle)
+        {
+            var blogPost = await blogPostRepository.GetBlogPostByUrlHandleAsync(urlHandle);
+            if (blogPost == null)
+            {
+                return NotFound();
+            }
+            var blogPostDto = mapper.Map<BlogPostDto>(blogPost);
+            return Ok(blogPostDto);
+        }
 
         //update a blog post
         [HttpPut("{id}")]

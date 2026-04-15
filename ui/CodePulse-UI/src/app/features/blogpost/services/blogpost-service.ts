@@ -24,6 +24,10 @@ export class BlogPostService {
     return httpResource<BlogPost>(() => `${this.apiUrl}/api/blogposts/${id()}`);
   }
 
+  getBlogPostByUrlHandle(urlHandle: () => string | undefined): HttpResourceRef<BlogPost | undefined> {
+    return httpResource<BlogPost>(() => `${this.apiUrl}/api/blogposts/urlHandle/${urlHandle()}`);
+  }
+
   updateBlogPost(id: string, blogPostData: CreateBlogPostRequest) {
     return this.http.put<void>(`${this.apiUrl}/api/blogposts/${id}`, blogPostData);
   }

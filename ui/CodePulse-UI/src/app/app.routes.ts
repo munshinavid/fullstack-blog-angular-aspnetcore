@@ -1,7 +1,16 @@
 import { Routes } from '@angular/router';
 import { AddCategory } from './features/category/add-category/add-category';
+import { Home } from './features/public/home/home';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: Home,
+  },
+  {
+    path: 'blog/:url',
+    loadComponent: () => import('./features/public/blog-details/blog-details').then(m => m.BlogDetails)
+  },
   {
     path: 'admin/categories',
     loadComponent: () => import('./features/category/category-list/category-list').then(m => m.CategoryList)

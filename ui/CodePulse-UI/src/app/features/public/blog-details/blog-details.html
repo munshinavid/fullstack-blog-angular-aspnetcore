@@ -1,0 +1,58 @@
+@if (blogPostResource.value(); as post) {
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <div class="mb-3">
+        @for (category of post.categories; track category.id) {
+          <span class="badge rounded-pill bg-primary me-1">{{category.name}}</span>
+        }
+      </div>
+
+      <h1 class="display-4 fw-bold mb-3">{{post.title}}</h1>
+      
+      <div class="d-flex align-items-center mb-4 text-muted">
+        <div class="me-3">
+          <i class="bi bi-person-circle me-1"></i> <strong>{{post.author}}</strong>
+        </div>
+        <div class="me-3">
+          <i class="bi bi-calendar3 me-1"></i> {{post.publishedDate | date:'longDate'}}
+        </div>
+      </div>
+
+      <img [src]="post.featuredImgUrl" 
+           class="img-fluid rounded shadow-sm mb-5 w-100" 
+           style="max-height: 450px; object-fit: cover;"
+           alt="{{post.title}}">
+
+      <div class="blog-content lh-lg fs-5 text-dark">
+        <div [innerHTML]="post.content"></div>
+      </div>
+
+      <hr class="my-5">
+
+      <div class="text-center">
+        <a [routerLink]="['/']" class="btn btn-outline-secondary px-4 rounded-pill">
+          <i class="bi bi-arrow-left me-2"></i> Back to Home
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+} 
+
+@else if (blogPostResource.isLoading()) {
+  <div class="container text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Reading blog post...</p>
+  </div>
+}
+
+@else if (blogPostResource.error()) {
+  <div class="container text-center py-5">
+    <div class="alert alert-danger">
+      Post not found or something went wrong!
+    </div>
+  </div>
+}
