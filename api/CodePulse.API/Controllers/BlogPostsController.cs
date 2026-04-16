@@ -36,11 +36,19 @@ namespace CodePulse.API.Controllers
         //get all blog posts
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllBlogPosts()
-        {
-            var blogPosts = await blogPostRepository.GetAllBlogPostsAsync();
-            var blogPostDtos = mapper.Map<List<BlogPostDto>>(blogPosts);
-            return Ok(blogPostDtos);
+        public async Task<IActionResult> GetAllBlogPosts([FromQuery] string? query, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {       
+            var result = await blogPostRepository.GetPaginatedBlogPostsAsync(query, page, pageSize);
+            
+            var response = new PagedResultDto<BlogPostDto>
+            {
+                Items = mapper.Map<List<BlogPostDto>>(result.Items),
+                TotalCount = result.TotalCount,
+                CurrentPage = result.CurrentPage,
+                PageSize = result.PageSize
+            };
+
+            return Ok(response);
         }
 
         //get blog post by id

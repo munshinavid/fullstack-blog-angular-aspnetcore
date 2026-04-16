@@ -1,5 +1,6 @@
 ﻿
 using CodePulse.API.Models.Domain;
+using CodePulse.API.Models.DTO;
 
 namespace CodePulse.API.Repositories
 {
@@ -8,6 +9,7 @@ namespace CodePulse.API.Repositories
         Task<BlogPost> CreateBlogPostAsync(BlogPost blogPost, List<Guid> categoryIds);
         Task<BlogPost> GetBlogPostByIdAsync(Guid id);
         Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync();
+        Task<PagedResultDto<BlogPost>> GetPaginatedBlogPostsAsync(string? query, int page, int pageSize);
         Task<BlogPost> UpdateBlogPostAsync(Guid id, BlogPost blogPost, List<Guid> categoryIds);
         Task<bool> DeleteBlogPostAsync(Guid id);
         Task<BlogPost> GetBlogPostByUrlHandleAsync(string urlHandle);

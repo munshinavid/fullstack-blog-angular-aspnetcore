@@ -6,6 +6,15 @@
     </a>
   </div>
 
+  <div class="mb-3">
+    <input 
+      type="text" 
+      class="form-control" 
+      placeholder="Search by title..." 
+      [value]="searchQuery()" 
+      (input)="onSearchChange($event)" />
+  </div>
+
   <div class="card shadow-sm border-0">
     <div class="card-body p-0">
       
@@ -36,7 +45,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (post of blogPostList(); track post.id) {
+              @for (post of pagedResult()?.items; track post.id) {
                 <tr>
                   <td class="ps-4">
                     <img [src]="post.featuredImgUrl" 
@@ -88,6 +97,30 @@
               }
             </tbody>
           </table>
+        </div>
+        
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-between align-items-center p-3 border-top">
+          <button 
+            class="btn btn-outline-primary" 
+            (click)="prevPage()" 
+            [disabled]="currentPage() === 1 || isLoading()">
+            Previous
+          </button>
+          
+          <span class="text-muted">
+            Page {{ currentPage() }} 
+            @if (pagedResult()?.totalCount !== undefined) {
+               (Total Items: {{ pagedResult()?.totalCount }})
+            }
+          </span>
+      
+          <button 
+            class="btn btn-outline-primary" 
+            (click)="nextPage()" 
+            [disabled]="!hasNextPage() || isLoading()">
+            Next
+          </button>
         </div>
       }
     </div>

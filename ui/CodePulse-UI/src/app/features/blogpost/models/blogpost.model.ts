@@ -1,5 +1,12 @@
 import { Category } from "../../category/models/category.model";
 
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  currentPage: number;
+  pageSize: number;
+}
+
 export interface CreateBlogPostRequest {
   title: string;
   description: string; // ব্যাকএন্ডে ShortDescription হলে এখানেও তাই দিও

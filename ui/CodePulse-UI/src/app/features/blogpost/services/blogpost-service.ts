@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BlogPost, CreateBlogPostRequest } from '../models/blogpost.model';
+import { BlogPost, CreateBlogPostRequest, PagedResult } from '../models/blogpost.model';
 import { environment } from '../../../../environments/environment.development';
 import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 
@@ -16,8 +16,14 @@ export class BlogPostService {
     return this.http.post<void>(`${this.apiUrl}/api/blogposts`, blogPostData);
   }
 
-  getAllBlogPosts(): HttpResourceRef<BlogPost[] | undefined> {
-    return httpResource<BlogPost[]>(() => `${this.apiUrl}/api/blogposts`);
+  getAllBlogPosts(query: () => string, page: () => number, pageSize: () => number): HttpResourceRef<PagedResult<BlogPost> | undefined> {
+    return httpResource<PagedResult<BlogPost>>(() => {
+        let url = `${this.apiUrl}/api/blogposts?page=${page()}&pageSize=${pageSize()}`;
+        if (query()) {
+          url += `&query=${encodeURIComponent(query())}`;
+        }
+        return url;
+    });
   }
 
   getBlogPostById(id: () => string | undefined): HttpResourceRef<BlogPost | undefined> {

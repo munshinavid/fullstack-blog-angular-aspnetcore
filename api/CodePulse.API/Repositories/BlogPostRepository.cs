@@ -7,6 +7,8 @@ namespace CodePulse.API.Repositories
 {
     public class BlogPostRepository : IBlogPostRepository
     {
+        private const int DefaultPageSize = 10;
+        private const int MaxPageSize = 50;
         private readonly BlogDbContext blogDbContext;
 
         public BlogPostRepository( BlogDbContext blogDbContext )
@@ -59,6 +61,42 @@ namespace CodePulse.API.Repositories
                 .Include(x => x.BlogPostCategories)
                 .ThenInclude(x => x.Category)
                 .ToListAsync();
+        }
+
+        public async Task<PagedResultDto<BlogPost>> GetPaginatedBlogPostsAsync(string? query, int page, int pageSize)
+        {
+            var currentPage = page <= 0 ? 1 : page;
+            var currentPageSize = pageSize <= 0
+                ? DefaultPageSize
+                : Math.Min(pageSize, MaxPageSize);
+
+            var pagedQuery = blogDbContext.BlogPosts
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                var trimmedQuery = query.Trim();
+                pagedQuery = pagedQuery.Where(x => x.Title.Contains(trimmedQuery));
+            }
+
+            var totalCount = await pagedQuery.CountAsync();
+
+            var items = await pagedQuery
+                .Include(x => x.BlogPostCategories)
+                .ThenInclude(x => x.Category)
+                .OrderByDescending(x => x.PublishedDate)
+                .Skip((currentPage - 1) * currentPageSize)
+                .Take(currentPageSize)
+                .ToListAsync();
+
+            return new PagedResultDto<BlogPost>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                CurrentPage = currentPage,
+                PageSize = currentPageSize
+            };
         }
 
         public async Task<BlogPost> GetBlogPostByIdAsync(Guid id)
