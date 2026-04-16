@@ -22,6 +22,7 @@ namespace CodePulse.API.Controllers
         }
         //create a blog post
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateBlogPost([FromBody] CreateBlogPostRequestDto requestDto)
         {
             // 🔥 DTO → Domain
@@ -34,7 +35,7 @@ namespace CodePulse.API.Controllers
         }
         //get all blog posts
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllBlogPosts()
         {
             var blogPosts = await blogPostRepository.GetAllBlogPostsAsync();
@@ -56,7 +57,7 @@ namespace CodePulse.API.Controllers
         }
         //get blog post by url handle
         [HttpGet("urlHandle/{urlHandle}")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetBlogPostByUrlHandle(string urlHandle)
         {
             var blogPost = await blogPostRepository.GetBlogPostByUrlHandleAsync(urlHandle);
@@ -70,6 +71,7 @@ namespace CodePulse.API.Controllers
 
         //update a blog post
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateBlogPost(Guid id, [FromBody] UpdateBlogPostRequestDto requestDto)
         {
             var blogPost = mapper.Map<BlogPost>(requestDto);
@@ -83,6 +85,7 @@ namespace CodePulse.API.Controllers
 
         //delete a blog post
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteBlogPost(Guid id)
         {
             var deleted = await blogPostRepository.DeleteBlogPostAsync(id);
