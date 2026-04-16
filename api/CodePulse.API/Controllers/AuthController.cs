@@ -68,11 +68,35 @@ namespace CodePulse.API.Controllers
                     var roles = await userManager.GetRolesAsync(user);
                     var jwtToken = tokenService.CreateJwtToken(user, roles.ToList());
 
-                    return Ok(new { Email = request.Email, Token = jwtToken, Roles = roles });
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true, // প্রোডাকশনে অবশ্যই true হবে
+                        SameSite = SameSiteMode.None,
+                        Expires = DateTime.UtcNow.AddMinutes(15) // টোকেন ১৫ মিনিট পর্যন্ত বৈধ থাকবে
+                    };
+                    Response.Cookies.Append("jwtToken", jwtToken, cookieOptions);
+
+                    return Ok(new { Email = request.Email, Roles = roles });
                 }
             }
 
             return BadRequest("Invalid Email or Password");
+        }
+
+        //logout and set httpOnly cookie to empty string and expire it immediately
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // প্রোডাকশনে অবশ্যই true হবে
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddMinutes(-1) // কুকি অবিলম্বে মেয়াদ শেষ হবে
+            };
+            Response.Cookies.Append("jwtToken", "", cookieOptions);
+            return Ok("Logged out successfully.");
         }
     }
 }

@@ -1,30 +1,40 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Code Pulse</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/">Code Pulse</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Admin
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" [routerLink]="['admin/categories']">Categories</a></li>
-            <li><a class="dropdown-item" [routerLink]="['admin/blogposts']">Blog Posts</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
+
+        @if (user()?.roles?.includes('Admin')) {
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Admin Panel
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="admin/categories">Categories</a></li>
+              <li><a class="dropdown-item" routerLink="admin/blogposts">Blog Posts</a></li>
+            </ul>
+          </li>
+        }
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+
+      <div class="d-flex align-items-center">
+        @if (user()) {
+          <span class="text-light me-3 small">Hi, {{ user()?.email }}</span>
+          <button class="btn btn-outline-light btn-sm rounded-pill px-3" (click)="onLogout()">Logout</button>
+        } 
+        @else {
+          <a routerLink="/login" class="btn btn-primary btn-sm rounded-pill px-4 me-2">Login</a>
+          <a routerLink="/register" class="btn btn-outline-primary btn-sm rounded-pill px-4">Register</a>
+        }
+      </div>
     </div>
   </div>
 </nav>

@@ -1,12 +1,20 @@
-import { Component } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { Component, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../features/auth/services/auth-service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css',
 })
 export class Navbar {
+  authService = inject(AuthService);
+  
+  // AuthService এর ইউজার সিগন্যালটি এখানে নিয়ে আসা
+  user = this.authService.user; 
 
+  onLogout() {
+    this.authService.logout();
+  }
 }

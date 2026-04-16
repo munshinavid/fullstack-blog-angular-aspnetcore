@@ -34,7 +34,7 @@ namespace CodePulse.API.Controllers
         }
         //get all blog posts
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllBlogPosts()
         {
             var blogPosts = await blogPostRepository.GetAllBlogPostsAsync();
@@ -56,6 +56,7 @@ namespace CodePulse.API.Controllers
         }
         //get blog post by url handle
         [HttpGet("urlHandle/{urlHandle}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetBlogPostByUrlHandle(string urlHandle)
         {
             var blogPost = await blogPostRepository.GetBlogPostByUrlHandleAsync(urlHandle);

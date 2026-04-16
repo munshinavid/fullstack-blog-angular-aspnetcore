@@ -40,6 +40,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
+
+        // টোকেনটি HttpOnly কুকি থেকে পড়ার জন্য ইভেন্ট সেট করা
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Cookies.ContainsKey("jwtToken"))
+                {
+                    context.Token = context.Request.Cookies["jwtToken"];
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
 
@@ -76,7 +89,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 //cors
-app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(x => x
+.WithOrigins("http://localhost:4200") // Replace with your frontend URL
+.AllowAnyMethod()
+.AllowAnyHeader()
+.AllowCredentials());
 
 app.UseAuthentication();
 app.UseAuthorization();

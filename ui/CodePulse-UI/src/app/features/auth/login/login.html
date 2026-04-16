@@ -1,0 +1,43 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-4 text-primary fw-bold">Welcome Back</h2>
+
+          @if (errorMessage()) {
+            <div class="alert alert-danger small py-2">
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+            <div class="mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" formControlName="email" placeholder="Enter your email">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" formControlName="password" placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" [disabled]="loginForm.invalid || isSubmitting()">
+              @if (isSubmitting()) {
+                <span class="spinner-border spinner-border-sm me-2"></span> Logging in...
+              } @else {
+                Login
+              }
+            </button>
+          </form>
+
+          <div class="text-center mt-4">
+            <p class="text-muted small">
+              Don't have an account? <a routerLink="/register" class="text-decoration-none">Register here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
