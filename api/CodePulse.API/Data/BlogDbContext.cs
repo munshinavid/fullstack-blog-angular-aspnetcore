@@ -15,6 +15,7 @@ namespace CodePulse.API.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<BlogPostCategory> BlogPostCategories { get; set; }
         public DbSet<BlogImage> BlogImages { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

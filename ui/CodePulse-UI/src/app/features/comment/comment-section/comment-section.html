@@ -1,0 +1,100 @@
+<section class="mt-5">
+  <h4 class="mb-3">Comments</h4>
+
+  <form (ngSubmit)="submitComment()" class="mb-4">
+    <div class="mb-2">
+      <textarea
+        class="form-control"
+        rows="4"
+        placeholder="Write your comment..."
+        [ngModel]="newCommentContent()"
+        (ngModelChange)="newCommentContent.set($event)"
+        name="commentContent"
+      ></textarea>
+    </div>
+
+    @if (submitError()) {
+      <div class="alert alert-danger py-2 mb-2" role="alert">
+        {{ submitError() }}
+      </div>
+    }
+
+    <button type="submit" class="btn btn-primary" [disabled]="!canSubmit()">
+      @if (isSubmitting()) {
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      }
+      Submit Comment
+    </button>
+  </form>
+
+  @if (deleteError()) {
+    <div class="alert alert-danger py-2 mb-3" role="alert">
+      {{ deleteError() }}
+    </div>
+  }
+
+  @if (isLoadingComments()) {
+    <div class="text-center py-3">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="text-muted mt-2 mb-0">Loading comments...</p>
+    </div>
+  }
+
+  @if (commentsError()) {
+    <div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
+      <span>{{ commentsError() }}</span>
+      <button class="btn btn-sm btn-outline-danger" (click)="fetchComments()">Retry</button>
+    </div>
+  }
+
+  @if (!isLoadingComments() && !commentsError()) {
+    @if (comments().length === 0) {
+      <p class="text-muted">No comments yet. Be the first one to comment.</p>
+    } @else {
+      <div class="d-flex flex-column gap-3">
+        @for (comment of comments(); track comment.id) {
+          <article class="card border-0 shadow-sm" [ngClass]="getCommentCardClasses(comment)">
+            <div class="card-body">
+              <p class="mb-2">{{ comment.content }}</p>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                  @if (comment.userId) {
+                    User: {{ comment.userEmail }}
+                  } @else {
+                    User: Anonymous
+                  }
+                  | {{ comment.dateAdded | date: 'medium' }}
+                </small>
+
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="updateCommentPlaceholder(comment)"
+                  title="Update feature coming soon"
+                >
+                  Update
+                </button>
+
+                @if (canDeleteComment(comment)) {
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger ms-2"
+                    (click)="deleteComment(comment)"
+                    [disabled]="deletingCommentId() === comment.id"
+                  >
+                    @if (deletingCommentId() === comment.id) {
+                      Deleting...
+                    } @else {
+                      Delete
+                    }
+                  </button>
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  }
+</section>

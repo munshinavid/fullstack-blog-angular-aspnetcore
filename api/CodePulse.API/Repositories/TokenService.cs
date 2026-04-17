@@ -19,7 +19,8 @@ namespace CodePulse.API.Repositories
             // ১. ক্লেইম (Claims) তৈরি করা: টোকেনের ভেতর কী কী তথ্য থাকবে
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             foreach (var role in roles)

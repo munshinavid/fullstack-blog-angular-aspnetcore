@@ -16,5 +16,7 @@
         //Blog post can have multiple categories
         public ICollection<BlogPostCategory> BlogPostCategories { get; set; }
 
+        //One Blog post can have multiple comments
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

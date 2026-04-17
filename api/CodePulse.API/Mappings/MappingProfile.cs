@@ -18,6 +18,11 @@ namespace CodePulse.API.Mappings
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
                     src.BlogPostCategories.Select(x => x.Category).ToList()));
             CreateMap<UpdateBlogPostRequestDto, BlogPost>().ReverseMap();
+
+            // Comment Mapping
+            CreateMap<Comment, CommentDto>().ReverseMap();
+            CreateMap<CreateCommentRequestDto, Comment>().ReverseMap();
+            //CreateMap<UpdateCommentRequestDto, Comment>().ReverseMap();
         }
     }
 }

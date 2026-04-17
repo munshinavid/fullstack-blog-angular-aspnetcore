@@ -4,6 +4,7 @@ using CodePulse.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodePulse.API.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    partial class BlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416214723_Add Blog Comment")]
+    partial class AddBlogComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,15 +146,12 @@ namespace CodePulse.API.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BlogPostId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -291,15 +291,15 @@ namespace CodePulse.API.Migrations
                         {
                             Id = "d6e321e8-3486-4f3d-979b-22d7a26f043e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5af125b8-859f-4070-9a69-2e03bcf80bfd",
+                            ConcurrencyStamp = "62bfd32e-9f58-49b5-838e-0c797788f358",
                             Email = "admin@myblog.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MYBLOG.COM",
                             NormalizedUserName = "ADMIN@MYBLOG.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMMaeG6OX+kFwLJbo6T3CQYTRjmirnTkGR0P2DqfX0218qbBZhIVG8d4+jCQSoqLYA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDvzVyk8FZzxQDY1Qr2+fXRcIjN49ENKOOgN1oM/Q1DVrvxC/VhuM4TsNkpJeh1/1Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "67e6e3ca-4f63-45d7-a702-95c236644198",
+                            SecurityStamp = "aa3841a7-29e2-4754-baf8-80bb32a04fe9",
                             TwoFactorEnabled = false,
                             UserName = "admin@myblog.com"
                         });
@@ -420,15 +420,7 @@ namespace CodePulse.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("BlogPost");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
