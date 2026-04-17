@@ -12,6 +12,7 @@
         public string FeaturedImgUrl { get; set; }
         public string UrlHandle { get; set; }
         public bool IsVisible { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         //Blog post can have multiple categories
         public ICollection<BlogPostCategory> BlogPostCategories { get; set; }

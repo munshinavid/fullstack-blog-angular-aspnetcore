@@ -38,7 +38,27 @@ namespace CodePulse.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllBlogPosts([FromQuery] string? query, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {       
-            var result = await blogPostRepository.GetPaginatedBlogPostsAsync(query, page, pageSize);
+            // isAdmin = false ensures only Published & Non-deleted posts are returned
+            var result = await blogPostRepository.GetPaginatedBlogPostsAsync(query, page, pageSize, false);
+            
+            var response = new PagedResultDto<BlogPostDto>
+            {
+                Items = mapper.Map<List<BlogPostDto>>(result.Items),
+                TotalCount = result.TotalCount,
+                CurrentPage = result.CurrentPage,
+                PageSize = result.PageSize
+            };
+
+            return Ok(response);
+        }
+
+        //get all admin blog posts (including draft & deleted)
+        [HttpGet("admin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllAdminBlogPosts([FromQuery] string? query, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {       
+            // isAdmin = true ignores the IsVisible and IsDeleted filters
+            var result = await blogPostRepository.GetPaginatedBlogPostsAsync(query, page, pageSize, true);
             
             var response = new PagedResultDto<BlogPostDto>
             {

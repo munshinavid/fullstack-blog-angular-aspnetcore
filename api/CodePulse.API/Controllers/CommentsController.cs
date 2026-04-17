@@ -54,7 +54,7 @@ namespace CodePulse.API.Controllers
         public async Task<IActionResult> GetCommentsByBlogPost(Guid blogPostId)
         {
             var comments = await commentRepository.GetByBlogPostIdAsync(blogPostId);
-            return Ok(mapper.Map<IEnumerable<CommentDto>>(comments));
+            return Ok(comments);
         }
 
         // DELETE: api/Comments/{id}

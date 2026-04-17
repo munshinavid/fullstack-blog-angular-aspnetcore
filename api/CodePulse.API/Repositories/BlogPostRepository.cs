@@ -45,10 +45,10 @@ namespace CodePulse.API.Repositories
 
         public async Task<bool> DeleteBlogPostAsync(Guid id)
         {
-            var existing = blogDbContext.BlogPosts.FirstOrDefault(x => x.Id == id);
+            var existing = await blogDbContext.BlogPosts.FirstOrDefaultAsync(x => x.Id == id);
             if (existing == null)
-                return await Task.FromResult(false);
-            blogDbContext.BlogPosts.Remove(existing);
+                return false;
+            existing.IsDeleted = true;
             await blogDbContext.SaveChangesAsync();
             return true;
         }
@@ -57,22 +57,30 @@ namespace CodePulse.API.Repositories
         {
             //include category
             return await blogDbContext.BlogPosts
+                .Where(x => x.IsVisible && !x.IsDeleted)
                 .AsNoTracking()
                 .Include(x => x.BlogPostCategories)
                 .ThenInclude(x => x.Category)
                 .ToListAsync();
         }
 
-        public async Task<PagedResultDto<BlogPost>> GetPaginatedBlogPostsAsync(string? query, int page, int pageSize)
+        public async Task<PagedResultDto<BlogPost>> GetPaginatedBlogPostsAsync(string? query, int page, int pageSize, bool isAdmin = false)
         {
             var currentPage = page <= 0 ? 1 : page;
             var currentPageSize = pageSize <= 0
                 ? DefaultPageSize
                 : Math.Min(pageSize, MaxPageSize);
 
+            // Start query
             var pagedQuery = blogDbContext.BlogPosts
                 .AsNoTracking()
                 .AsQueryable();
+
+            // Core logic: filter out Drafts and Deleted unless Admin
+            if (!isAdmin)
+            {
+                pagedQuery = pagedQuery.Where(x => x.IsVisible && !x.IsDeleted);
+            }
 
             if (!string.IsNullOrWhiteSpace(query))
             {

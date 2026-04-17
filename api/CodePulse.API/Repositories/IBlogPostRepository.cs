@@ -9,7 +9,7 @@ namespace CodePulse.API.Repositories
         Task<BlogPost> CreateBlogPostAsync(BlogPost blogPost, List<Guid> categoryIds);
         Task<BlogPost> GetBlogPostByIdAsync(Guid id);
         Task<IEnumerable<BlogPost>> GetAllBlogPostsAsync();
-        Task<PagedResultDto<BlogPost>> GetPaginatedBlogPostsAsync(string? query, int page, int pageSize);
+        Task<PagedResultDto<BlogPost>> GetPaginatedBlogPostsAsync(string? query, int page, int pageSize, bool isAdmin = false);
         Task<BlogPost> UpdateBlogPostAsync(Guid id, BlogPost blogPost, List<Guid> categoryIds);
         Task<bool> DeleteBlogPostAsync(Guid id);
         Task<BlogPost> GetBlogPostByUrlHandleAsync(string urlHandle);
