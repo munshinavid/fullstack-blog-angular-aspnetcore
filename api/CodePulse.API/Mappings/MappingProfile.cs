@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using CodePulse.API.Models.Domain;
 using CodePulse.API.Models.DTO;
+using System.Text.RegularExpressions;
+using System;
+using System.Linq;
 
 namespace CodePulse.API.Mappings
 {

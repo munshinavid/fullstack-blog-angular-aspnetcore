@@ -13,6 +13,7 @@
         public string UrlHandle { get; set; }
         public bool IsVisible { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public int ViewCount { get; set; }
 
         //Blog post can have multiple categories
         public ICollection<BlogPostCategory> BlogPostCategories { get; set; }

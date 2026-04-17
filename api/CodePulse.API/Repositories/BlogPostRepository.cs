@@ -110,7 +110,7 @@ namespace CodePulse.API.Repositories
         public async Task<BlogPost> GetBlogPostByIdAsync(Guid id)
         {
             var result = await blogDbContext.BlogPosts
-                .AsNoTracking()
+                // .AsNoTracking() // Removed tracking ignoring because we need to save ViewCount update
                 .Include(x => x.BlogPostCategories)
                 .ThenInclude(x => x.Category)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -118,19 +118,30 @@ namespace CodePulse.API.Repositories
             if (result == null) {
                 throw new Exception("Blog post not found.");
             }
+
+            // Increment ViewCount only when a specific blog post is queried directly
+            result.ViewCount++;
+            await blogDbContext.SaveChangesAsync();
+
             return result;
         }
 
         public async Task<BlogPost> GetBlogPostByUrlHandleAsync(string urlHandle)
         {
             var result = await blogDbContext.BlogPosts
-                .AsNoTracking()
+                // .AsNoTracking() // Removed tracing restriction here too for ViewCount
                 .Include(x => x.BlogPostCategories)
                 .ThenInclude(x => x.Category)
                 .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+                
             if (result == null) {
                 throw new Exception("Blog post not found.");
             }
+
+            // Increment ViewCount only when a specific blog post is queried directly
+            result.ViewCount++;
+            await blogDbContext.SaveChangesAsync();
+
             return result;
         }
 

@@ -81,6 +81,10 @@ namespace CodePulse.API.Controllers
                 return NotFound();
             }
             var blogPostDto = mapper.Map<BlogPostDto>(blogPost);
+            
+            // Calculate dynamic reading time
+            blogPostDto.ReadingTimeMinutes = CalculateReadingTime(blogPost.Content);
+
             return Ok(blogPostDto);
         }
         //get blog post by url handle
@@ -94,6 +98,10 @@ namespace CodePulse.API.Controllers
                 return NotFound();
             }
             var blogPostDto = mapper.Map<BlogPostDto>(blogPost);
+            
+            // Calculate dynamic reading time
+            blogPostDto.ReadingTimeMinutes = CalculateReadingTime(blogPost.Content);
+
             return Ok(blogPostDto);
         }
 
@@ -155,6 +163,16 @@ namespace CodePulse.API.Controllers
             var result = await blogPostRepository.HardDeleteBlogPostAsync(id);
             if (!result) return NotFound();
             return Ok();
+        }
+
+        // Helper method to dynamically calculate estimated reading time based on 200 words per minute.
+        private static int CalculateReadingTime(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+                return 1;
+
+            var words = content.Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries).Length;
+            return (int)Math.Ceiling(words / 200.0);
         }
     }
 }

@@ -43,6 +43,8 @@ export interface BlogPost {
   urlHandle: string;
   author: string;
   publishedDate: Date;
+  viewCount: number;
+  readingTimeMinutes: number;
   isVisible: boolean;
   isDeleted: boolean; // ড্যাশবোর্ডের জন্য, যদি ব্যাকএন্ডে থাকে
   // categories: string[]; // যদি ক্যাটাগরি আইডি পাঠাতে চাও
