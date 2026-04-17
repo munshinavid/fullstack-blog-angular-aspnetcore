@@ -126,7 +126,7 @@ namespace CodePulse.API.Controllers
 
         // GET: /api/blogposts/stats
         [HttpGet("stats")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetDashboardStats()
         {
             // Get post statistics for admin dashboard

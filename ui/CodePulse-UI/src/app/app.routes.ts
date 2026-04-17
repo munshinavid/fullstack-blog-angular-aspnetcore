@@ -43,5 +43,9 @@ export const routes: Routes = [
   {
     path: 'admin/blogposts/edit/:id',
     loadComponent: () => import('./features/blogpost/edit-blogpost/edit-blogpost').then(m => m.EditBlogpost)
+  },
+  {
+    path: 'admin/dashboard',
+    loadComponent: () => import('./features/admin/dashboard/dashboard').then(m => m.AdminDashboardComponent)
   }
 ];

@@ -1,0 +1,84 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Admin Dashboard</h2>
+    <button (click)="loadDashboardData()" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+  </div>
+
+  <div class="row g-3 mb-5" *ngIf="stats()">
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 bg-primary text-white p-3">
+        <small class="text-uppercase fw-semibold">Total Posts</small>
+        <h2 class="mb-0">{{ stats().totalPosts }}</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 bg-warning text-dark p-3">
+        <small class="text-uppercase fw-semibold">Drafts</small>
+        <h2 class="mb-0">{{ stats().draftCount }}</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 bg-danger text-white p-3">
+        <small class="text-uppercase fw-semibold">Trash (Deleted)</small>
+        <h2 class="mb-0">{{ stats().deletedCount }}</h2>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm border-0 bg-info text-white p-3">
+        <small class="text-uppercase fw-semibold">Categories</small>
+        <h2 class="mb-0">{{ stats().categoryCount }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+      <h5 class="mb-0 fw-bold">Manage Content</h5>
+      <a routerLink="/admin/blogposts/add" class="btn btn-primary btn-sm">+ Add Post</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Blog Title</th>
+            <th>Status</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let post of posts()" [class.opacity-50]="post.isDeleted">
+            <td>
+              <div class="fw-semibold">{{ post.title }}</div>
+              <small class="text-muted">{{ post.publishedDate | date:'mediumDate' }}</small>
+            </td>
+            <td>
+              <span *ngIf="post.isDeleted" class="badge bg-danger-subtle text-danger border border-danger">Deleted</span>
+              <span *ngIf="!post.isDeleted && post.isVisible" class="badge bg-success-subtle text-success border border-success">Published</span>
+              <span *ngIf="!post.isDeleted && !post.isVisible" class="badge bg-warning-subtle text-warning border border-warning">Draft</span>
+            </td>
+            <td class="text-center">
+              <div class="btn-group btn-group-sm">
+                <a [routerLink]="['/admin/blogposts', post.id]" class="btn btn-light border" title="Edit">
+                  Edit
+                </a>
+                
+                <button *ngIf="!post.isDeleted" (click)="onDelete(post.id)" class="btn btn-outline-danger" title="Soft Delete">
+                  Delete
+                </button>
+                <button *ngIf="post.isDeleted" (click)="onRestore(post.id)" class="btn btn-success" title="Restore Post">
+                  Restore
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="posts().length === 0 && !isLoading()">
+            <td colspan="3" class="text-center py-5 text-muted">No posts found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

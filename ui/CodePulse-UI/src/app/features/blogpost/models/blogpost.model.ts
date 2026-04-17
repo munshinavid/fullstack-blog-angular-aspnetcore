@@ -44,6 +44,8 @@ export interface BlogPost {
   author: string;
   publishedDate: Date;
   isVisible: boolean;
+  isDeleted: boolean; // ড্যাশবোর্ডের জন্য, যদি ব্যাকএন্ডে থাকে
   // categories: string[]; // যদি ক্যাটাগরি আইডি পাঠাতে চাও
   categories: Category[]; // যদি সম্পূর্ণ ক্যাটাগরি অবজেক্ট পাঠাতে চাও
+
 }

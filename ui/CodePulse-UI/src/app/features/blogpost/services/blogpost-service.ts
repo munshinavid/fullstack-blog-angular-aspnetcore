@@ -26,6 +26,29 @@ export class BlogPostService {
     });
   }
 
+  // ২. অ্যাডমিনদের জন্য (নতুন - Admin endpoint call)
+  getAllAdminBlogPosts(query: string, page: number, pageSize: number) {
+    // এটি যেহেতু ড্যাশবোর্ড থেকে কল হবে, আমরা সরাসরি Observable রিটার্ন করছি
+    let url = `${this.apiUrl}/api/blogposts/admin?page=${page}&pageSize=${pageSize}`;
+    if (query) url += `&query=${encodeURIComponent(query)}`;
+    return this.http.get<PagedResult<BlogPost>>(url);
+  }
+
+  // ৩. ড্যাশবোর্ড স্ট্যাটাস (নতুন)
+  getDashboardStats() {
+    return this.http.get<any>(`${this.apiUrl}/api/blogposts/stats`);
+  }
+
+  // ৪. রিস্টোর পোস্ট (নতুন)
+  restoreBlogPost(id: string) {
+    return this.http.put<void>(`${this.apiUrl}/api/blogposts/restore/${id}`, {});
+  }
+
+  // ৫. পারমানেন্ট ডিলিট (নতুন - Optional)
+  hardDeleteBlogPost(id: string) {
+    return this.http.delete<void>(`${this.apiUrl}/api/blogposts/hard-delete/${id}`);
+  }
+
   getBlogPostById(id: () => string | undefined): HttpResourceRef<BlogPost | undefined> {
     return httpResource<BlogPost>(() => `${this.apiUrl}/api/blogposts/${id()}`);
   }
