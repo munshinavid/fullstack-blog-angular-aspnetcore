@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using CodePulse.API.Validators;
 
 // 1. Initial Serilog Configuration
 Log.Logger = new LoggerConfiguration()
@@ -73,6 +76,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Register FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBlogPostRequestValidator>();
 
 //dbcontext
 builder.Services.AddDbContext<BlogDbContext>(options =>
