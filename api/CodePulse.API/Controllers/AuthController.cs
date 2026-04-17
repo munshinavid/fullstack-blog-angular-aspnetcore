@@ -3,6 +3,8 @@ using CodePulse.API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CodePulse.API.Controllers
 {
@@ -97,6 +99,17 @@ namespace CodePulse.API.Controllers
             };
             Response.Cookies.Append("jwtToken", "", cookieOptions);
             return Ok("Logged out successfully.");
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult GetMe()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            return Ok(new { userId, email, role });
         }
     }
 }

@@ -32,7 +32,7 @@ export class CommentSection {
     () => this.newCommentContent().trim().length > 0 && !this.isSubmitting()
   );
 
-  currentUserId = computed(() => this.getCurrentUserIdFromToken());
+  currentUserId = computed(() => this.getCurrentUserId());
   currentUserEmail = computed(() => this.authService.user()?.email?.trim().toLowerCase() ?? null);
 
   isAdmin = computed(() => {
@@ -166,39 +166,17 @@ export class CommentSection {
     };
   }
 
-  private getCurrentUserIdFromToken(): string | null {
-    const token = this.authService.user()?.token;
-    if (!token) {
-      return null;
-    }
-
-    try {
-      const payloadBase64 = token.split('.')[1];
-      if (!payloadBase64) {
-        return null;
-      }
-
-      const base64 = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
-      const paddedBase64 = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
-      const payload = JSON.parse(atob(paddedBase64)) as Record<string, string | string[]>;
-
-      const userIdClaim =
-        payload['nameid'] ||
-        payload['userid'] ||
-        payload['userId'] ||
-        payload['sub'] ||
-        payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid'] ||
-        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-
-      if (typeof userIdClaim === 'string') {
-        return userIdClaim;
-      }
-
-      return null;
-    } catch {
-      return null;
-    }
+  private getCurrentUserId(): string | null {
+  // ১. সরাসরি সিগন্যাল থেকে userId নিন (যা আপনি /me এন্ডপয়েন্ট থেকে পেয়েছেন)
+  const userId = this.authService.user()?.userId;
+  
+  if (userId) {
+    return userId;
   }
+
+  // যদি আইডি না থাকে, তবে ইউজার লগইন নেই
+  return null;
+}
 
   updateCommentPlaceholder(_comment: Comment): void {
     this.submitError.set('Update feature will be enabled after backend update API is ready.');

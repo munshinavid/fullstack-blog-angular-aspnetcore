@@ -5,10 +5,17 @@ import { environment } from '../../../../environments/environment';
 
 // ইউজারের ডাটা স্ট্রাকচার
 export interface User {
+  userId?: string;
   email: string;
-  token: string;
   roles: string[];
 }
+
+export interface MeResponse {
+  userId: string;
+  email: string;
+  role: string | null;
+}
+
 export interface loginRequest {
   email: string;
   password: string;
@@ -24,12 +31,38 @@ export class AuthService {
   // ১. ইউজার স্টেট ম্যানেজ করার জন্য সিগন্যাল
   user = signal<User | null>(null);
 
-  constructor() {
-    // ২. অ্যাপ রিলোড হলে লোকাল স্টোরেজ থেকে ডাটা রিকভার করা
+  constructor() {}
+
+  initUser(): void {
+    // ১. স্ক্রিন ফ্লিকার কমাতে আগে localStorage থেকে state set
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
-      this.user.set(JSON.parse(savedUser));
+      try {
+        this.user.set(JSON.parse(savedUser) as User);
+      } catch {
+        localStorage.removeItem('user');
+      }
     }
+
+    // ২. backend `/me` থেকে latest auth state এনে sync
+    this.getMe().subscribe({
+      next: (meUser) => {
+        const current = this.user();
+        const normalizedUser: User = {
+          userId: meUser.userId,
+          email: meUser.email,
+          roles: meUser.role ? [meUser.role] : (current?.roles ?? []),
+        };
+
+        this.user.set(normalizedUser);
+        localStorage.setItem('user', JSON.stringify(normalizedUser));
+      },
+      error: () => {
+        // cookie/session invalid হলে local auth state clear
+        this.user.set(null);
+        localStorage.removeItem('user');
+      },
+    });
   }
 
   // ৩. রেজিস্ট্রেশন মেথড
@@ -40,6 +73,10 @@ export class AuthService {
   // ৪. লগইন মেথড
   login(model: loginRequest): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/api/auth/login`, model,);
+  }
+
+  getMe(): Observable<MeResponse> {
+    return this.http.get<MeResponse>(`${this.apiUrl}/api/auth/me`);
   }
 
   // ৫. লগইন সফল হলে ডাটা সেভ করা
