@@ -194,5 +194,52 @@ namespace CodePulse.API.Repositories
                 .ThenInclude(x => x.Category)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        // 🔹 Get Dashboard Statistics
+        public async Task<DashboardStatsDto> GetStatsAsync()
+        {
+            var total = await blogDbContext.BlogPosts.CountAsync();
+            var published = await blogDbContext.BlogPosts.CountAsync(x => x.IsVisible && !x.IsDeleted);
+            var draft = await blogDbContext.BlogPosts.CountAsync(x => !x.IsVisible && !x.IsDeleted);
+            var deleted = await blogDbContext.BlogPosts.CountAsync(x => x.IsDeleted);
+
+            return new DashboardStatsDto
+            {
+                TotalPosts = total,
+                PublishedPosts = published,
+                DraftPosts = draft,
+                DeletedPosts = deleted
+            };
+        }
+
+        // 🔹 Restore a soft-deleted post
+        public async Task<bool> RestoreBlogPostAsync(Guid id)
+        {
+            var existing = await blogDbContext.BlogPosts.FirstOrDefaultAsync(x => x.Id == id);
+            if (existing == null)
+            {
+                return false;
+            }
+
+            // Set IsDeleted flag to false to restore
+            existing.IsDeleted = false;
+            await blogDbContext.SaveChangesAsync();
+            return true;
+        }
+
+        // 🔹 Permanently remove post from database
+        public async Task<bool> HardDeleteBlogPostAsync(Guid id)
+        {
+            var existing = await blogDbContext.BlogPosts.FirstOrDefaultAsync(x => x.Id == id);
+            if (existing == null)
+            {
+                return false;
+            }
+
+            // Permanently delete the record from database
+            blogDbContext.BlogPosts.Remove(existing);
+            await blogDbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

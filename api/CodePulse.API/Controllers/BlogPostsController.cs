@@ -123,5 +123,38 @@ namespace CodePulse.API.Controllers
             }
             return NoContent();
         }
+
+        // GET: /api/blogposts/stats
+        [HttpGet("stats")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetDashboardStats()
+        {
+            // Get post statistics for admin dashboard
+            var stats = await blogPostRepository.GetStatsAsync();
+            return Ok(stats);
+        }
+
+        // PUT: /api/blogposts/restore/{id}
+        [HttpPut("restore/{id:Guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RestorePost(Guid id)
+        {
+            // Restore a soft-deleted post
+            var result = await blogPostRepository.RestoreBlogPostAsync(id);
+            if (!result) return NotFound();
+            return Ok();
+        }
+
+        // DELETE: /api/blogposts/hard-delete/{id}
+        // (যেহেতু সাধারণ ডিলিট অলরেডি আছে, পারমানেন্ট ডিলিটের জন্য আলাদা পাথ দেওয়া ভালো)
+        [HttpDelete("hard-delete/{id:Guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> HardDeletePost(Guid id)
+        {
+            // Permanently remove the post from the database
+            var result = await blogPostRepository.HardDeleteBlogPostAsync(id);
+            if (!result) return NotFound();
+            return Ok();
+        }
     }
 }

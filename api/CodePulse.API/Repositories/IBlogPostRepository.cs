@@ -14,6 +14,8 @@ namespace CodePulse.API.Repositories
         Task<bool> DeleteBlogPostAsync(Guid id);
         Task<BlogPost> GetBlogPostByUrlHandleAsync(string urlHandle);
 
-
+        Task<DashboardStatsDto> GetStatsAsync();
+        Task<bool> RestoreBlogPostAsync(Guid id);
+        Task<bool> HardDeleteBlogPostAsync(Guid id);
     }
 }
