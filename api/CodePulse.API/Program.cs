@@ -1,16 +1,29 @@
 ﻿using AutoMapper;
 using CodePulse.API.Data;
+using CodePulse.API.Exceptions;
 using CodePulse.API.Mappings;
 using CodePulse.API.Repositories; // Add this if MappingProfile is in this namespace
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
+// 1. Initial Serilog Configuration
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/CodePulseLogs.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
-// Add services to the container.
+try
+{
+    var builder = WebApplication.CreateBuilder(args);
+
+    // 2. Clear default logging and use Serilog
+    builder.Host.UseSerilog();
+
+    // Add services to the container.
 
 // ১. Identity সেটআপ
 builder.Services.AddIdentityCore<IdentityUser>(options => {
@@ -76,9 +89,16 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
+// 3. Register custom Exception Handler and Problem Details
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.     
+// Configure the HTTP request pipeline.
+// 4. Register Exception Handler Middleware
+app.UseExceptionHandler();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -101,4 +121,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
