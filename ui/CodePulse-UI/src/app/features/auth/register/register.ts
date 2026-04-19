@@ -8,6 +8,8 @@ import { AuthService } from '../services/auth-service';
   standalone: true,
   imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './register.html',
+  // Improvement #7: Register page styles (matches login page design)
+  styleUrl: './register.css',
 })
 export class Register {
   private authService = inject(AuthService);

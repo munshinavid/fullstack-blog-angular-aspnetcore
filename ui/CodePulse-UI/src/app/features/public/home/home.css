@@ -1,21 +1,137 @@
-/* কার্ডে হোভার এফেক্ট */
+/*
+ * ============================================================
+ *  Home Page Styles — Improvements #5, #6, #8, #12
+ * ============================================================
+ */
+
+
+/* ============================================================
+ * IMPROVEMENT #5: Hero Section Gradient
+ * ============================================================
+ * A diagonal gradient from indigo (#667eea) to purple (#764ba2).
+ * The border-radius at the bottom creates a soft curved edge
+ * that separates the hero from the card grid below.
+ *
+ * Interview Tip: linear-gradient(135deg, ...) means the gradient
+ * runs diagonally from top-left to bottom-right. 'deg' is the
+ * angle measured clockwise from the top.
+ * ============================================================ */
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 0 0 2rem 2rem;
+}
+
+.hero-title {
+  color: white;
+}
+
+/* The "Code" part of "CodePulse" — lighter shade for emphasis */
+.hero-accent {
+  color: #a5b4fc;
+}
+
+.hero-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* ============================================================
+ * IMPROVEMENT #6: Blog Card Hover Animation
+ * ============================================================
+ * Two effects on hover:
+ * 1. Card lifts up (translateY) with a deeper shadow
+ * 2. Image inside zooms slightly (scale 1.05)
+ *
+ * The overflow:hidden on the image container clips the zoomed
+ * image so it doesn't overflow the card boundaries.
+ *
+ * Interview Tip: Using CSS transitions instead of JavaScript
+ * animations is better for performance because transitions
+ * run on the GPU via the compositor thread, not the main thread.
+ * ============================================================ */
 .blog-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden; /* Clips the zoomed image */
 }
 
 .blog-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* টেক্সট যদি বেশি বড় হয় তবে ৩ লাইনের পর '...' দেখাবে */
-.line-clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+/* Image zoom on card hover — the parent needs overflow:hidden */
+.blog-card .card-img-top {
+  transition: transform 0.4s ease;
 }
 
+.blog-card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Card title — fixed min-height so cards align even with different title lengths */
 .card-title {
-    min-height: 3rem; /* টাইটেলগুলো যেন একই সমান লাইনের হয় */
+  min-height: 3rem;
+}
+
+/* Text truncation utility (for descriptions longer than 3 lines) */
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/* ============================================================
+ * IMPROVEMENT #8: Empty State Illustration
+ * ============================================================
+ * The emoji scales up large to act as a visual focal point.
+ * This is simpler than importing an SVG illustration library
+ * but achieves the same "designed empty state" feeling.
+ * ============================================================ */
+.empty-state-icon {
+  font-size: 4rem;
+}
+
+
+/* ============================================================
+ * IMPROVEMENT #12: Skeleton Loading Placeholders
+ * ============================================================
+ * How it works:
+ * 1. We create a div with a gray animated background
+ * 2. The background is a gradient that's 200% wide
+ * 3. The @keyframes animation slides it left→right
+ * 4. This creates the "shimmer" effect you see on YouTube/Facebook
+ *
+ * .skeleton       — base: used for image placeholders
+ * .skeleton-text  — for text line placeholders (narrower, with margin)
+ *
+ * Interview Tip: This is better than a spinner because:
+ * - It shows the layout shape before data arrives (no CLS)
+ * - Users perceive the page as loading faster
+ * - It's a pattern used by all major apps (YouTube, LinkedIn, etc.)
+ * ============================================================ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #e9ecef 25%,   /* Light gray */
+    #dee2e6 50%,   /* Slightly darker gray (the "shine" moving across) */
+    #e9ecef 75%    /* Back to light gray */
+  );
+  background-size: 200% 100%;          /* 2x width so we can slide it */
+  animation: shimmer 1.5s infinite;    /* Continuous left→right animation */
+  border-radius: 8px;
+}
+
+/* Text-specific skeleton — adds height and spacing to mimic text lines */
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 10px;
+}
+
+/* The actual shimmer animation — slides the gradient from left to right */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }

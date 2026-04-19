@@ -1,0 +1,52 @@
+/*
+ * ============================================================
+ *  IMPROVEMENT #7: Register Page Styles
+ * ============================================================
+ *  Same design system as login page for visual consistency.
+ *  Sharing the same gradient background and card style creates
+ *  a cohesive "auth flow" experience.
+ *
+ *  Interview Tip: Consistency between pages is a key UX principle.
+ *  Users should feel like they're in the same app when moving
+ *  between login and register. We achieve this by using the same
+ *  gradient, card styling, and button design on both pages.
+ * ============================================================
+ */
+
+:host {
+  display: block;
+  min-height: calc(100vh - 56px);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.card {
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:disabled {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  opacity: 0.6;
+}

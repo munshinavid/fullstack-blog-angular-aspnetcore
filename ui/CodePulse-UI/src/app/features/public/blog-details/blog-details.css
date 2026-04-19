@@ -1,3 +1,13 @@
+/*
+ * ============================================================
+ *  Blog Details Page Styles — Improvement #11
+ * ============================================================
+ */
+
+/* --- Blog Content Typography ---
+   Makes the rendered HTML content (from the rich text editor)
+   look clean and readable. */
+
 /* কন্টেন্টের ভেতরের ইমেজগুলোকে রেসপন্সিভ করা */
 .blog-content ::ng-deep img {
     max-width: 100%;
@@ -6,7 +16,7 @@
     margin: 20px 0;
 }
 
-/* লাইন হাইট এবং প্যারাগ্রাফ মার্জিন যেন পড়তে সুবিধা হয় */
+/* লাইন হাইট এবং প্যারাগ্রাফ মার্জিন যেন পড়তে সুবিধা হয় */
 .blog-content {
     color: #2c3e50;
     line-height: 1.8;
@@ -29,6 +39,7 @@
     font-weight: 700;
 }
 
+/* --- Meta Pills (view count, reading time) --- */
 .post-stats {
     gap: 0.6rem;
 }
@@ -67,5 +78,60 @@
     .meta-pill {
         font-size: 0.8rem;
         padding: 0.32rem 0.62rem;
+    }
+}
+
+
+/* ============================================================
+ * IMPROVEMENT #11: Floating "Back to Top" Button Styles
+ * ============================================================
+ * position:fixed — positions relative to the viewport, so it
+ * stays visible even as the user scrolls.
+ *
+ * The transition and hover effect make the button feel interactive.
+ * We use a gradient background matching the hero/brand colors
+ * for visual consistency.
+ *
+ * z-index:1050 ensures it appears above other page elements
+ * (Bootstrap's navbar uses z-index:1030, modals 1060).
+ *
+ * Interview Tip: The z-index stacking context — fixed/absolute
+ * elements need explicit z-index values to control layering.
+ * Bootstrap has a well-defined z-index scale that you should
+ * be aware of when adding custom fixed elements.
+ * ============================================================ */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    z-index: 1050;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    /* Smooth appearance animation */
+    animation: fadeInUp 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-to-top-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Entry animation — slides up and fades in */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

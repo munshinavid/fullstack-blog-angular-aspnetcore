@@ -1,0 +1,41 @@
+<!-- 
+  Improvement #4: Footer — Provides a professional-looking bottom section.
+  Uses Bootstrap Icons for GitHub/LinkedIn links. The 'mt-auto' pushes
+  the footer to the bottom when page content is short (works with flexbox on body).
+-->
+<footer class="footer-section mt-auto">
+  <div class="container">
+    <div class="row align-items-center py-4">
+
+      <!-- Left: Brand -->
+      <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+        <span class="fw-bold fs-5 footer-brand">
+          <i class="bi bi-code-slash me-2"></i>CodePulse
+        </span>
+      </div>
+
+      <!-- Center: Copyright -->
+      <div class="col-md-4 text-center mb-3 mb-md-0">
+        <p class="mb-0 small footer-copy">
+          &copy; {{ currentYear }} CodePulse. Built with Angular &amp; ASP.NET Core
+        </p>
+      </div>
+
+      <!-- Right: Social Links — Update these with YOUR actual links! -->
+      <div class="col-md-4 text-center text-md-end">
+        <a href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener"
+           class="footer-link me-3" aria-label="GitHub">
+          <i class="bi bi-github fs-5"></i>
+        </a>
+        <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noopener"
+           class="footer-link me-3" aria-label="LinkedIn">
+          <i class="bi bi-linkedin fs-5"></i>
+        </a>
+        <a href="mailto:your@email.com" class="footer-link" aria-label="Email">
+          <i class="bi bi-envelope-fill fs-5"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</footer>

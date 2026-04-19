@@ -1,4 +1,14 @@
-
+<!-- 
+  Root App Layout
+  Improvement #4: Added <app-footer> so every page gets a footer.
+  The <main> wrapper with flex-grow pushes the footer to the bottom
+  even when page content is short (sticky footer pattern).
+-->
 <app-navbar></app-navbar>
 
-<router-outlet />
+<!-- flex-grow: 1 ensures content area fills remaining space -->
+<main class="flex-grow-1">
+  <router-outlet />
+</main>
+
+<app-footer></app-footer>

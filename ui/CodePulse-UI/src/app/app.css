@@ -1,0 +1,20 @@
+/*
+ * Root App Layout — Sticky Footer Pattern
+ * 
+ * Improvement #4: Uses flexbox on :host (the app-root element) so the footer
+ * sticks to the bottom even when page content is short.
+ *
+ * How it works:
+ *  - :host is display:flex + flex-direction:column + min-height:100vh
+ *  - <main> has flex-grow:1 so it expands to fill available space
+ *  - Footer naturally sits at the bottom
+ *
+ * Interview Tip: This is the CSS Flexbox "sticky footer" pattern.
+ * It's cleaner than using position:fixed (which overlaps content)
+ * or JavaScript-based approaches.
+ */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

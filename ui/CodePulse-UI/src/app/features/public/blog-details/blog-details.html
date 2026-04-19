@@ -1,3 +1,6 @@
+<!--
+  Blog Details Page — Contains Improvement #11 (Back to Top button)
+-->
 @if (blogPostResource.value(); as post) {
 <div class="container mt-5 mb-5">
   <div class="row justify-content-center">
@@ -60,6 +63,34 @@
     </div>
   </div>
 </div>
+
+<!-- ============================================================
+     IMPROVEMENT #11: Floating "Back to Top" Button
+     ============================================================
+     Why: For long blog posts, users have to scroll a long way back
+     to the top. This floating button provides a quick shortcut.
+
+     How it works:
+     - The button is fixed at the bottom-right of the viewport
+     - It only appears when the user scrolls past 300px (controlled
+       by the showBackToTop signal in the TypeScript component)
+     - The @if block adds/removes the button from the DOM entirely
+       (better than display:none because it's not rendered at all)
+     - Clicking calls scrollToTop() which uses window.scrollTo
+
+     Interview Tip: position:fixed takes the element out of the
+     normal document flow and positions it relative to the viewport.
+     This is different from position:absolute which positions
+     relative to the nearest positioned ancestor.
+     ============================================================ -->
+@if (showBackToTop()) {
+  <button class="btn btn-primary back-to-top-btn shadow-lg"
+          (click)="scrollToTop()"
+          aria-label="Scroll back to top">
+    <i class="bi bi-arrow-up"></i>
+  </button>
+}
+
 } 
 
 @else if (blogPostResource.isLoading()) {

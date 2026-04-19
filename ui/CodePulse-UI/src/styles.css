@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+ * ============================================================
+ *  IMPROVEMENT #2: Global Design Foundation (styles.css)
+ * ============================================================
+ *  Why: Without a global stylesheet, every component starts from
+ *  Bootstrap's raw defaults. This file sets a consistent "base layer"
+ *  for typography, colors, transitions, and spacing so the whole app
+ *  feels cohesive without repeating CSS in every component.
+ *
+ *  Interview Tip: This is called a "design token" approach —
+ *  centralizing visual constants (font, colors, border-radius) in
+ *  one place so they're easy to change later.
+ * ============================================================
+ */
+
+/* --- Typography ---
+   Inter gives a modern, clean feel. We load it via Google Fonts in index.html
+   and apply it globally here. The fallback chain (-apple-system, etc.) ensures
+   the app still looks fine while the font loads or if it fails. */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8f9fa; /* Soft off-white, easier on the eyes than pure white */
+  color: #1a1a2e;            /* Dark navy instead of pure black — softer contrast */
+  min-height: 100vh;
+}
+
+/* --- Smooth Scrolling ---
+   Enables animated scrolling when using anchor links or scrollTo().
+   Used by the "Back to Top" button (Improvement #11). */
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- Global Link Transitions ---
+   Makes link color changes animate smoothly instead of snapping.
+   Small detail, but it makes interactions feel more polished. */
+a {
+  transition: color 0.2s ease;
+}
+
+/* --- Card Improvements ---
+   Default Bootstrap cards have sharp 4px corners. 12px makes them
+   look more modern (similar to Apple, Google Material Design 3). */
+.card {
+  border-radius: 12px;
+}
+
+/* --- Button Improvements ---
+   Adds a smooth transition to ALL buttons so hover/active states
+   animate instead of jumping. Covers background, border, shadow, and transform. */
+.btn {
+  transition: all 0.2s ease;
+}
+
+/* --- Selection Color ---
+   Customizes the text highlight color to match our brand.
+   Small detail that shows attention to polish. */
+::selection {
+  background-color: #667eea;
+  color: white;
+}
