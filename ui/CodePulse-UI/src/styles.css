@@ -144,32 +144,3 @@ a:hover {
 ::-webkit-scrollbar-thumb { background: var(--bg-card-hover); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* NgxEditor dark theme */
-.NgxEditor {
-  background: var(--bg-surface) !important;
-  color: var(--text-primary) !important;
-  border-color: var(--border-color) !important;
-}
-
-.NgxEditor__MenuBar {
-  background: var(--bg-card) !important;
-  border-bottom: 1px solid var(--border-color) !important;
-}
-
-.NgxEditor__MenuItem .NgxEditor__MenuItem--Icon,
-.NgxEditor__MenuItem .NgxEditor__MenuItem--Text {
-  color: var(--text-secondary) !important;
-}
-
-.NgxEditor__MenuItem.NgxEditor__MenuItem--Active,
-.NgxEditor__MenuItem:hover {
-  background: var(--bg-card-hover) !important;
-}
-
-.NgxEditor__Placeholder::before {
-  color: var(--text-muted) !important;
-}
-
-.NgxEditor__Content {
-  min-height: 200px;
-}

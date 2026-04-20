@@ -1,7 +1,6 @@
-import { Component, ComponentRef, ViewChild, ViewContainerRef, inject, input, OnDestroy, OnInit, effect, signal } from '@angular/core';
+import { Component, ComponentRef, ViewChild, ViewContainerRef, inject, input, effect, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
 import { BlogPostService } from '../services/blogpost-service';
 import { CategoryServices } from '../../category/services/category-services';
 import { UpdateBlogPostRequest } from '../models/blogpost.model';
@@ -10,38 +9,23 @@ import { ImageSelector } from '../../../shared/components/image-selector/image-s
 @Component({
   selector: 'app-edit-blogpost',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NgxEditorModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './edit-blogpost.html',
   styleUrl: './edit-blogpost.css',
 })
-export class EditBlogpost implements OnInit, OnDestroy {
-  // Input from Route Params
+export class EditBlogpost {
   id = input.required<string>();
 
   private blogPostService = inject(BlogPostService);
   private categoryService = inject(CategoryServices);
   private router = inject(Router);
 
-  // Get Data using Resource/Signals (assuming your service uses signals)
-  // your existing logic updated for reactive data fetching
   categoryList = this.categoryService.getAllCategories().value;
   
-  // Local state
-  editor!: Editor;
   isSubmitting = signal(false);
   selectedCategoryIds: string[] = [];
   @ViewChild('imageSelectorHost', { read: ViewContainerRef }) imageSelectorHost?: ViewContainerRef;
   private imageSelectorRef: ComponentRef<ImageSelector> | null = null;
-
-  toolbar: Toolbar = [
-    ['bold', 'italic'],
-    ['underline', 'strike'],
-    ['code', 'blockquote'],
-    ['ordered_list', 'bullet_list'],
-    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
-    ['link', 'image'],
-    ['align_left', 'align_center', 'align_right', 'align_justify'],
-  ];
 
   updateBlogPostForm = new FormGroup({
     title: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -58,9 +42,9 @@ export class EditBlogpost implements OnInit, OnDestroy {
   blogPost = this.blogPostRef.value;
 
   constructor() {
-    // যখনই ডাটাবেস থেকে blogPost এর ডাটা আসবে, তখনই ফর্মটি ফিল-আপ হবে
+    // Populate form when blog post data arrives from API
     effect(() => {
-      const data= this.blogPost();
+      const data = this.blogPost();
       if (data) {
         this.updateBlogPostForm.patchValue({
           title: data.title,
@@ -73,20 +57,11 @@ export class EditBlogpost implements OnInit, OnDestroy {
           isVisible: data.isVisible
         });
 
-        // আগে থেকে সিলেক্ট করা ক্যাটাগরি আইডিগুলো সেট করা
         if (data.categories) {
-            this.selectedCategoryIds = data.categories.map(x => x.id.toString());
+          this.selectedCategoryIds = data.categories.map(x => x.id.toString());
         }
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.editor = new Editor();
-  }
-
-  ngOnDestroy(): void {
-    this.editor.destroy();
   }
 
   onCategoryChange(event: Event) {
@@ -137,14 +112,11 @@ export class EditBlogpost implements OnInit, OnDestroy {
   }
 
   onImgError(event: any) {
-    event.target.src = 'https://via.placeholder.com/400x200?text=Invalid+Image+URL';
+    event.target.src = 'https://placehold.co/400x200/1a1a3e/818cf8?text=Invalid+URL';
   }
 
   openImageSelector() {
-    if (!this.imageSelectorHost || this.imageSelectorRef) {
-      return;
-    }
-    console.log('Opening image selector: url);');
+    if (!this.imageSelectorHost || this.imageSelectorRef) return;
     this.imageSelectorHost.clear();
     this.imageSelectorRef = this.imageSelectorHost.createComponent(ImageSelector);
     this.imageSelectorRef.instance.imageSelected.subscribe((url) => this.onImageSelected(url));

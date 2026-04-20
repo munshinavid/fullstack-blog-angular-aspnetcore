@@ -69,15 +69,10 @@
         </div>
 
         <div class="mb-4">
-          <label class="form-label fw-bold">Content</label>
-          <div class="NgxEditor__Wrapper border rounded" style="border-color: var(--border-color) !important;">
-            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
-            <ngx-editor 
-              [editor]="editor" 
-              formControlName="content" 
-              [placeholder]="'Type here...'"> 
-            </ngx-editor>
-          </div>
+          <label class="form-label fw-bold">Content <span class="fw-normal small" style="color: var(--text-muted);">(Markdown supported)</span></label>
+          <textarea class="form-control font-monospace" rows="12" formControlName="content"
+                    placeholder="# Write your post in Markdown&#10;&#10;Use **bold**, *italic*, `code`, lists, etc."
+                    style="min-height: 250px; resize: vertical;"></textarea>
         </div>
 
         <div class="mb-4 form-check form-switch">
