@@ -1,60 +1,38 @@
-/*
- * ============================================================
- *  IMPROVEMENT #7: Login Page Styles
- * ============================================================
- *  Why: The login page is often the FIRST thing a recruiter sees
- *  if they try to interact with your app. A plain white form
- *  on a white background looks unfinished. The gradient background
- *  and card styling make it feel like a real product.
- *
- *  Interview Tip: The ':host' selector targets the component's
- *  root element itself (not a child). We use it to make the
- *  entire login page fill the screen with a gradient background.
- *
- *  'backdrop-filter: blur(10px)' creates a frosted glass effect
- *  on the card — this is called "glassmorphism" in design trends.
- *  It works because the card has a semi-transparent background (rgba).
- * ============================================================
- */
-
-/* Fill the full viewport height with a gradient background */
+/* Dark login page */
 :host {
-  display: block;
-  min-height: calc(100vh - 56px);  /* Subtract navbar height */
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   display: flex;
-  align-items: center;  /* Vertically center the card */
+  align-items: center;
+  min-height: calc(100vh - 56px);
+  background: var(--bg-primary);
   padding: 2rem 0;
 }
 
-/* Frosted glass card effect */
 .card {
   border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Custom focus ring color — matches our brand purple */
 .form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem rgba(129, 140, 248, 0.15);
 }
 
-/* Override button to match our brand gradient */
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--accent);
   border: none;
   border-radius: 8px;
+  color: #fff;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
-  transform: translateY(-1px);  /* Subtle lift on hover */
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
 }
 
 .btn-primary:disabled {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  opacity: 0.6;
+  background: var(--accent);
+  opacity: 0.5;
 }

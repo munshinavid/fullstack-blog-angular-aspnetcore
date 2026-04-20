@@ -1,81 +1,103 @@
+<!-- #2: Dashboard stats with correct field names -->
+<!-- #3: Dark table header -->
+<!-- #4: Outline delete button -->
+<!-- #5: Empty state -->
+<!-- #6: Card hover + row hover via CSS -->
 <div class="container py-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">Admin Dashboard</h2>
-    <button (click)="loadDashboardData()" class="btn btn-outline-secondary btn-sm">
-      <i class="bi bi-arrow-clockwise"></i> Refresh
+    <button (click)="loadDashboardData()" class="btn btn-sm rounded-pill px-3"
+            style="border: 1px solid var(--border-color); color: var(--text-secondary);">
+      <i class="bi bi-arrow-clockwise me-1"></i> Refresh
     </button>
   </div>
 
+  <!-- Stats cards -->
   <div class="row g-3 mb-5" *ngIf="stats()">
-    <div class="col-md-3">
-      <div class="card shadow-sm border-0 bg-primary text-white p-3">
-        <small class="text-uppercase fw-semibold">Total Posts</small>
-        <h2 class="mb-0">{{ stats().totalPosts }}</h2>
+    <div class="col-6 col-md-3">
+      <div class="stat-card p-3 rounded-3" style="background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);">
+        <small class="text-uppercase fw-semibold" style="color: var(--accent); font-size: 0.7rem;">Total Posts</small>
+        <h2 class="mb-0 fw-bold">{{ stats().totalPosts }}</h2>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card shadow-sm border-0 bg-warning text-dark p-3">
-        <small class="text-uppercase fw-semibold">Drafts</small>
-        <h2 class="mb-0">{{ stats().draftCount }}</h2>
+    <div class="col-6 col-md-3">
+      <div class="stat-card p-3 rounded-3" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);">
+        <small class="text-uppercase fw-semibold" style="color: #22c55e; font-size: 0.7rem;">Published</small>
+        <h2 class="mb-0 fw-bold">{{ stats().publishedPosts }}</h2>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card shadow-sm border-0 bg-danger text-white p-3">
-        <small class="text-uppercase fw-semibold">Trash (Deleted)</small>
-        <h2 class="mb-0">{{ stats().deletedCount }}</h2>
+    <div class="col-6 col-md-3">
+      <div class="stat-card p-3 rounded-3" style="background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.2);">
+        <small class="text-uppercase fw-semibold" style="color: #eab308; font-size: 0.7rem;">Drafts</small>
+        <h2 class="mb-0 fw-bold">{{ stats().draftPosts }}</h2>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card shadow-sm border-0 bg-info text-white p-3">
-        <small class="text-uppercase fw-semibold">Categories</small>
-        <h2 class="mb-0">{{ stats().categoryCount }}</h2>
+    <div class="col-6 col-md-3">
+      <div class="stat-card p-3 rounded-3" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);">
+        <small class="text-uppercase fw-semibold" style="color: #ef4444; font-size: 0.7rem;">Trash</small>
+        <h2 class="mb-0 fw-bold">{{ stats().deletedPosts }}</h2>
       </div>
     </div>
   </div>
 
-  <div class="card shadow-sm border-0">
-    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+  <!-- Manage content table -->
+  <div class="card border-0" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center"
+         style="background: var(--bg-surface); border-bottom: 1px solid var(--border-color);">
       <h5 class="mb-0 fw-bold">Manage Content</h5>
-      <a routerLink="/admin/blogposts/add" class="btn btn-primary btn-sm">+ Add Post</a>
+      <a routerLink="/admin/blogposts/add" class="btn btn-sm rounded-pill px-3"
+         style="background: var(--accent); color: #fff; border: none;">
+        <i class="bi bi-plus me-1"></i>Add Post
+      </a>
     </div>
+
     <div class="table-responsive">
       <table class="table table-hover align-middle mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>Blog Title</th>
-            <th>Status</th>
-            <th class="text-center">Action</th>
+        <!-- Dark table header -->
+        <thead>
+          <tr style="background: var(--bg-surface);">
+            <th style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Blog Title</th>
+            <th style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Status</th>
+            <th class="text-center" style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let post of posts()" [class.opacity-50]="post.isDeleted">
             <td>
               <div class="fw-semibold">{{ post.title }}</div>
-              <small class="text-muted">{{ post.publishedDate | date:'mediumDate' }}</small>
+              <small style="color: var(--text-muted);">{{ post.publishedDate | date:'mediumDate' }}</small>
             </td>
             <td>
-              <span *ngIf="post.isDeleted" class="badge bg-danger-subtle text-danger border border-danger">Deleted</span>
-              <span *ngIf="!post.isDeleted && post.isVisible" class="badge bg-success-subtle text-success border border-success">Published</span>
-              <span *ngIf="!post.isDeleted && !post.isVisible" class="badge bg-warning-subtle text-warning border border-warning">Draft</span>
+              <span *ngIf="post.isDeleted" class="badge rounded-pill" style="background: rgba(239,68,68,0.15); color: #fca5a5;">Deleted</span>
+              <span *ngIf="!post.isDeleted && post.isVisible" class="badge rounded-pill" style="background: rgba(34,197,94,0.15); color: #4ade80;">Published</span>
+              <span *ngIf="!post.isDeleted && !post.isVisible" class="badge rounded-pill" style="background: rgba(234,179,8,0.15); color: #fbbf24;">Draft</span>
             </td>
             <td class="text-center">
               <div class="btn-group btn-group-sm">
-                <a [routerLink]="['/admin/blogposts', post.id]" class="btn btn-light border" title="Edit">
-                  Edit
+                <a [routerLink]="['/admin/blogposts', post.id]" class="btn btn-sm rounded-pill px-3 me-1"
+                   style="border: 1px solid var(--border-color); color: var(--text-secondary);">
+                  <i class="bi bi-pencil me-1"></i>Edit
                 </a>
-                
-                <button *ngIf="!post.isDeleted" (click)="onDelete(post.id)" class="btn btn-outline-danger" title="Soft Delete">
-                  Delete
+                <!-- #4: Outline delete — less aggressive -->
+                <button *ngIf="!post.isDeleted" (click)="onDelete(post.id)" class="btn btn-sm rounded-pill px-3"
+                        style="border: 1px solid rgba(239,68,68,0.3); color: #fca5a5;">
+                  <i class="bi bi-trash me-1"></i>Delete
                 </button>
-                <button *ngIf="post.isDeleted" (click)="onRestore(post.id)" class="btn btn-success" title="Restore Post">
-                  Restore
+                <button *ngIf="post.isDeleted" (click)="onRestore(post.id)" class="btn btn-sm rounded-pill px-3"
+                        style="border: 1px solid rgba(34,197,94,0.3); color: #4ade80;">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i>Restore
                 </button>
               </div>
             </td>
           </tr>
 
+          <!-- #5: Empty state -->
           <tr *ngIf="posts().length === 0 && !isLoading()">
-            <td colspan="3" class="text-center py-5 text-muted">No posts found.</td>
+            <td colspan="3" class="text-center py-5">
+              <div style="font-size: 2.5rem;" class="mb-2">📭</div>
+              <p class="fw-semibold mb-1" style="color: var(--text-secondary);">No posts found</p>
+              <p class="small mb-0" style="color: var(--text-muted);">Create your first post to get started.</p>
+            </td>
           </tr>
         </tbody>
       </table>

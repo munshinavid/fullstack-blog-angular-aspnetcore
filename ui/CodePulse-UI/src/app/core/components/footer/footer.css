@@ -1,30 +1,16 @@
-/*
- * Improvement #4: Footer Styles
- * Uses a dark background with subtle gradient to match the navbar.
- * Links use opacity transitions for a smooth hover effect.
- */
-
+/* Dark footer */
 .footer-section {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
 }
 
-.footer-brand {
-  color: #a5b4fc; /* Soft purple — matches hero gradient accent */
-}
-
-.footer-copy {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* Social icon links — start semi-transparent, brighten on hover */
 .footer-link {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-muted);
   text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .footer-link:hover {
-  color: #a5b4fc;
-  transform: translateY(-2px); /* Slight lift on hover */
+  color: var(--accent);
+  transform: translateY(-2px);
 }

@@ -1,61 +1,175 @@
-/*
- * ============================================================
- *  IMPROVEMENT #2: Global Design Foundation (styles.css)
- * ============================================================
- *  Why: Without a global stylesheet, every component starts from
- *  Bootstrap's raw defaults. This file sets a consistent "base layer"
- *  for typography, colors, transitions, and spacing so the whole app
- *  feels cohesive without repeating CSS in every component.
- *
- *  Interview Tip: This is called a "design token" approach —
- *  centralizing visual constants (font, colors, border-radius) in
- *  one place so they're easy to change later.
- * ============================================================
- */
+/* Dark Theme Design Foundation
+   Color palette: deep navy bg, purple/blue accents, soft gray text */
 
-/* --- Typography ---
-   Inter gives a modern, clean feel. We load it via Google Fonts in index.html
-   and apply it globally here. The fallback chain (-apple-system, etc.) ensures
-   the app still looks fine while the font loads or if it fails. */
+:root {
+  --bg-primary: #0a0a1a;
+  --bg-card: #12122a;
+  --bg-card-hover: #1a1a3e;
+  --bg-surface: #16162e;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #818cf8;
+  --accent-hover: #a78bfa;
+  --border-color: rgba(255, 255, 255, 0.06);
+  --gradient-start: #667eea;
+  --gradient-end: #764ba2;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f8f9fa; /* Soft off-white, easier on the eyes than pure white */
-  color: #1a1a2e;            /* Dark navy instead of pure black — softer contrast */
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
 }
 
-/* --- Smooth Scrolling ---
-   Enables animated scrolling when using anchor links or scrollTo().
-   Used by the "Back to Top" button (Improvement #11). */
 html {
   scroll-behavior: smooth;
 }
 
-/* --- Global Link Transitions ---
-   Makes link color changes animate smoothly instead of snapping.
-   Small detail, but it makes interactions feel more polished. */
 a {
   transition: color 0.2s ease;
+  color: var(--accent);
 }
 
-/* --- Card Improvements ---
-   Default Bootstrap cards have sharp 4px corners. 12px makes them
-   look more modern (similar to Apple, Google Material Design 3). */
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* Dark cards */
 .card {
-  border-radius: 12px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
-/* --- Button Improvements ---
-   Adds a smooth transition to ALL buttons so hover/active states
-   animate instead of jumping. Covers background, border, shadow, and transform. */
 .btn {
   transition: all 0.2s ease;
 }
 
-/* --- Selection Color ---
-   Customizes the text highlight color to match our brand.
-   Small detail that shows attention to polish. */
+/* Brand gradient selection */
 ::selection {
-  background-color: #667eea;
+  background-color: var(--gradient-start);
   color: white;
+}
+
+/* Dark form controls */
+.form-control, .form-select {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: var(--bg-card);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 0.2rem rgba(129, 140, 248, 0.15);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-label {
+  color: var(--text-secondary);
+}
+
+/* Dark dropdown */
+.dropdown-menu {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+}
+
+.dropdown-item {
+  color: var(--text-primary);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background: var(--bg-card-hover);
+  color: var(--accent);
+}
+
+/* Dark alerts */
+.alert-danger {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+/* Dark table (admin pages) */
+.table {
+  --bs-table-bg: var(--bg-card);
+  --bs-table-color: var(--text-primary);
+  --bs-table-border-color: var(--border-color);
+  --bs-table-striped-bg: var(--bg-surface);
+  --bs-table-hover-bg: var(--bg-card-hover);
+}
+
+/* Bootstrap text overrides */
+.text-muted { color: var(--text-muted) !important; }
+.text-dark { color: var(--text-primary) !important; }
+.bg-white, .bg-light { background-color: var(--bg-card) !important; }
+.border { border-color: var(--border-color) !important; }
+.shadow-sm { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important; }
+
+/* Dark pagination */
+.page-link {
+  background: var(--bg-surface);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.page-link:hover {
+  background: var(--bg-card-hover);
+  color: var(--accent);
+}
+
+.page-item.active .page-link {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Dark modal */
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-card-hover); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* NgxEditor dark theme */
+.NgxEditor {
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.NgxEditor__MenuBar {
+  background: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.NgxEditor__MenuItem .NgxEditor__MenuItem--Icon,
+.NgxEditor__MenuItem .NgxEditor__MenuItem--Text {
+  color: var(--text-secondary) !important;
+}
+
+.NgxEditor__MenuItem.NgxEditor__MenuItem--Active,
+.NgxEditor__MenuItem:hover {
+  background: var(--bg-card-hover) !important;
+}
+
+.NgxEditor__Placeholder::before {
+  color: var(--text-muted) !important;
+}
+
+.NgxEditor__Content {
+  min-height: 200px;
 }

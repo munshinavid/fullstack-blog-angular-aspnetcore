@@ -1,27 +1,35 @@
-<!-- create form to add category using bootstrap -->
-<div class="container mt-4">
-  <h2>Add Category</h2>
-  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="categoryName" class="form-label">Category Name</label>
-      <input type="text" class="form-control" id="categoryName" formControlName="categoryName" placeholder="Enter category name"/>
-      @if(categoryName?.touched && categoryName?.invalid && categoryName?.errors?.['required']){
-        <div class="text-danger">Category name is required.</div>
-      }
-      @if(categoryName?.touched && categoryName?.invalid && categoryName?.errors?.['maxlength']){
-        <div class="text-danger">Category name must be at most 5 characters long.</div>
-      }
+<!-- Dark add category form -->
+<div class="container mt-4 mb-5">
+  <h2 class="fw-bold mb-4" style="color: var(--accent);">Add Category</h2>
+  
+  <div class="card border-0" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+    <div class="card-body p-4">
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="categoryName" class="form-label">Category Name</label>
+          <input type="text" class="form-control" id="categoryName" formControlName="categoryName" placeholder="Enter category name"/>
+          @if(categoryName?.touched && categoryName?.invalid && categoryName?.errors?.['required']){
+            <div class="text-danger small mt-1">Category name is required.</div>
+          }
+          @if(categoryName?.touched && categoryName?.invalid && categoryName?.errors?.['maxlength']){
+            <div class="text-danger small mt-1">Category name must be at most 5 characters long.</div>
+          }
+        </div>
+        <div class="mb-4">
+          <label for="categoryUrl" class="form-label">URL Handle (slug)</label>
+          <input type="text" class="form-control" id="categoryUrl" formControlName="categoryUrl" placeholder="Enter category URL"/>
+          @if(categoryUrl?.touched && categoryUrl?.invalid && categoryUrl?.errors?.['required']){
+            <div class="text-danger small mt-1">Category URL is required.</div>
+          }
+          @if(categoryUrl?.touched && categoryUrl?.errors?.['minlength']){
+            <div class="text-danger small mt-1">Category URL must be at least 2 characters long.</div>
+          }
+        </div>
+        <button type="submit" class="btn rounded-pill px-4"
+                style="background: var(--accent); color: #fff; border: none;">
+          <i class="bi bi-plus me-1"></i>Add Category
+        </button>
+      </form>
     </div>
-    <div class="mb-3">
-      <label for="categoryUrl" class="form-label">URL Handle(slug) </label>
-      <input type="text" class="form-control" id="categoryUrl" formControlName="categoryUrl" placeholder="Enter category URL"/>
-        @if(categoryUrl?.touched && categoryUrl?.invalid && categoryUrl?.errors?.['required']){
-            <div class="text-danger">Category URL is required.</div>
-        }
-        @if(categoryUrl?.touched  && categoryUrl?.errors?.['minlength']){
-            <div class="text-danger">Category URL must be at least 2 characters long.</div>
-        }
-    </div>
-    <button type="submit" class="btn btn-primary">Add Category</button>
-  </form>
+  </div>
 </div>

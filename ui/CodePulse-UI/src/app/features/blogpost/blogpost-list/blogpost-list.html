@@ -1,27 +1,33 @@
+<!-- #1: Fixed images, #3: Dark table header, #4: Outline delete -->
+<!-- #5: Empty state, #7: Dark search input -->
 <div class="container mt-4 mb-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-primary fw-bold">Blog Posts</h2>
-    <a class="btn btn-primary shadow-sm" [routerLink]="['/admin/blogposts/add']">
-       Add New Blog Post
+    <h2 class="fw-bold" style="color: var(--accent);">Blog Posts</h2>
+    <a class="btn btn-sm rounded-pill px-4" [routerLink]="['/admin/blogposts/add']"
+       style="background: var(--accent); color: #fff; border: none;">
+      <i class="bi bi-plus me-1"></i>Add New Post
     </a>
   </div>
 
+  <!-- #7: Dark search input -->
   <div class="mb-3">
-    <input 
-      type="text" 
-      class="form-control" 
-      placeholder="Search by title..." 
-      [value]="searchQuery()" 
-      (input)="onSearchChange($event)" />
+    <div class="position-relative">
+      <i class="bi bi-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+      <input type="text" class="form-control ps-5"
+             placeholder="Search by title..."
+             [value]="searchQuery()"
+             (input)="onSearchChange($event)"
+             style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+    </div>
   </div>
 
-  <div class="card shadow-sm border-0">
+  <div class="card border-0" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
     <div class="card-body p-0">
       
       @if (isLoading()) {
         <div class="text-center p-5">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="mt-2 text-muted">Fetching blog posts...</p>
+          <div class="spinner-border" style="color: var(--accent);" role="status"></div>
+          <p class="mt-2" style="color: var(--text-muted);">Fetching blog posts...</p>
         </div>
       } 
       
@@ -34,61 +40,66 @@
       @else {
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-              <tr>
-                <th class="ps-4" style="width: 100px;">Image</th>
-                <th>Title & Author</th>
-                <th>Published Date</th>
-                <th class="text-center">Status</th>
-                <th class="text-end pe-4">Actions</th>
-                <th style="width: 1px;"> Categories </th>
+            <!-- #3: Dark table header -->
+            <thead>
+              <tr style="background: var(--bg-surface);">
+                <th class="ps-4" style="width: 100px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Image</th>
+                <th style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Title & Author</th>
+                <th style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Published Date</th>
+                <th class="text-center" style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Status</th>
+                <th class="text-end pe-4" style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Actions</th>
+                <th style="width: 1px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Categories</th>
               </tr>
             </thead>
             <tbody>
               @for (post of pagedResult()?.items; track post.id) {
                 <tr>
+                  <!-- #1: Fixed image with fallback -->
                   <td class="ps-4">
-                    <!-- Improvement #3: Fixed broken placeholder URL (via.placeholder.com is dead) -->
-                    <img [src]="post.featuredImgUrl" 
+                    <img [src]="post.featuredImgUrl || 'https://placehold.co/70x45/1a1a3e/818cf8?text=No+Img'"
                          [alt]="post.title" 
-                         class="rounded border shadow-xs"
-                         style="width: 70px; height: 45px; object-fit: cover;"
-                         onerror="this.onerror=null; this.src='https://placehold.co/70x45/e2e8f0/64748b?text=No+Img';">
+                         class="rounded"
+                         style="width: 70px; height: 45px; object-fit: cover; border: 1px solid var(--border-color);"
+                         onerror="this.onerror=null; this.src='https://placehold.co/70x45/1a1a3e/818cf8?text=No+Img';">
                   </td>
 
                   <td>
-                    <div class="fw-bold text-dark">{{ post.title }}</div>
-                    <small class="text-muted">By: {{ post.author }}</small>
+                    <div class="fw-bold">{{ post.title }}</div>
+                    <small style="color: var(--text-muted);">By: {{ post.author }}</small>
                   </td>
 
                   <td>
-                    <span class="text-secondary small">
+                    <span class="small" style="color: var(--text-secondary);">
                       {{ post.publishedDate | date:'dd MMM, yyyy' }}
                     </span>
                   </td>
 
                   <td class="text-center">
                     @if (post.isVisible) {
-                      <span class="badge rounded-pill bg-success-subtle text-success border border-success">Visible</span>
+                      <span class="badge rounded-pill" style="background: rgba(34,197,94,0.15); color: #4ade80;">Visible</span>
                     } @else {
-                      <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary">Hidden</span>
+                      <span class="badge rounded-pill" style="background: rgba(148,163,184,0.15); color: var(--text-muted);">Hidden</span>
                     }
                   </td>
 
                   <td class="text-end pe-4">
                     <div class="btn-group">
-                      <a class="btn btn-sm btn-outline-dark" [routerLink]="['/admin/blogposts/edit', post.id]">
-                        Edit
+                      <a class="btn btn-sm rounded-pill px-3 me-1" [routerLink]="['/admin/blogposts/edit', post.id]"
+                         style="border: 1px solid var(--border-color); color: var(--text-secondary);">
+                        <i class="bi bi-pencil me-1"></i>Edit
                       </a>
-                      <button class="btn btn-sm btn-outline-danger" (click)="deleteBlogPost(post.id.toString())">
-                        Delete
+                      <!-- #4: Outline delete -->
+                      <button class="btn btn-sm rounded-pill px-3" (click)="deleteBlogPost(post.id.toString())"
+                              style="border: 1px solid rgba(239,68,68,0.3); color: #fca5a5;">
+                        <i class="bi bi-trash me-1"></i>Delete
                       </button>
                     </div>
                   </td>
+
                   <td>
                     <div class="d-flex flex-wrap gap-1">
                       @for (category of post.categories; track category.id) {
-                        <span class="badge rounded-pill bg-info-subtle text-info border border-info">
+                        <span class="badge rounded-pill" style="background: rgba(129,140,248,0.12); color: var(--accent);">
                           {{ category.name }}
                         </span>
                       }
@@ -96,31 +107,43 @@
                   </td>
                 </tr>
               }
+
+              <!-- #5: Empty state -->
+              @empty {
+                <tr>
+                  <td colspan="6" class="text-center py-5">
+                    <div style="font-size: 2.5rem;" class="mb-2">📭</div>
+                    <p class="fw-semibold mb-1" style="color: var(--text-secondary);">No posts found</p>
+                    <p class="small mb-0" style="color: var(--text-muted);">Try a different search or add a new post.</p>
+                  </td>
+                </tr>
+              }
             </tbody>
           </table>
         </div>
         
-        <!-- Pagination Controls -->
-        <div class="d-flex justify-content-between align-items-center p-3 border-top">
-          <button 
-            class="btn btn-outline-primary" 
-            (click)="prevPage()" 
-            [disabled]="currentPage() === 1 || isLoading()">
-            Previous
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center p-3"
+             style="border-top: 1px solid var(--border-color);">
+          <button class="btn btn-sm rounded-pill px-3"
+                  style="border: 1px solid var(--accent); color: var(--accent);"
+                  (click)="prevPage()" 
+                  [disabled]="currentPage() === 1 || isLoading()">
+            <i class="bi bi-chevron-left me-1"></i>Previous
           </button>
           
-          <span class="text-muted">
+          <span style="color: var(--text-muted);">
             Page {{ currentPage() }} 
             @if (pagedResult()?.totalCount !== undefined) {
-               (Total Items: {{ pagedResult()?.totalCount }})
+               ({{ pagedResult()?.totalCount }} items)
             }
           </span>
       
-          <button 
-            class="btn btn-outline-primary" 
-            (click)="nextPage()" 
-            [disabled]="!hasNextPage() || isLoading()">
-            Next
+          <button class="btn btn-sm rounded-pill px-3"
+                  style="border: 1px solid var(--accent); color: var(--accent);"
+                  (click)="nextPage()" 
+                  [disabled]="!hasNextPage() || isLoading()">
+            Next<i class="bi bi-chevron-right ms-1"></i>
           </button>
         </div>
       }

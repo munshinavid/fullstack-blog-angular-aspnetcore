@@ -1,0 +1,4 @@
+/* #6: Table row hover */
+.table-hover tbody tr {
+  transition: background 0.15s ease;
+}

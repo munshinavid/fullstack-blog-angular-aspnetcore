@@ -1,6 +1,7 @@
 <section class="mt-5">
-  <h4 class="mb-3">Comments</h4>
+  <h4 class="mb-3 fw-bold">Comments</h4>
 
+  <!-- Comment form -->
   <form (ngSubmit)="submitComment()" class="mb-4">
     <div class="mb-2">
       <textarea
@@ -19,9 +20,11 @@
       </div>
     }
 
-    <button type="submit" class="btn btn-primary" [disabled]="!canSubmit()">
+    <button type="submit" class="btn rounded-pill px-4"
+            style="background: var(--accent); color: #fff; border: none;"
+            [disabled]="!canSubmit()">
       @if (isSubmitting()) {
-        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
       }
       Submit Comment
     </button>
@@ -33,13 +36,15 @@
     </div>
   }
 
+  <!-- Loading -->
   @if (isLoadingComments()) {
     <div class="text-center py-3">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p class="text-muted mt-2 mb-0">Loading comments...</p>
+      <div class="spinner-border" style="color: var(--accent);" role="status"></div>
+      <p class="mt-2 mb-0" style="color: var(--text-muted);">Loading comments...</p>
     </div>
   }
 
+  <!-- Error -->
   @if (commentsError()) {
     <div class="alert alert-danger d-flex justify-content-between align-items-center" role="alert">
       <span>{{ commentsError() }}</span>
@@ -47,49 +52,43 @@
     </div>
   }
 
+  <!-- Comments list -->
   @if (!isLoadingComments() && !commentsError()) {
     @if (comments().length === 0) {
-      <p class="text-muted">No comments yet. Be the first one to comment.</p>
+      <p style="color: var(--text-muted);">No comments yet. Be the first one to comment.</p>
     } @else {
       <div class="d-flex flex-column gap-3">
         @for (comment of comments(); track comment.id) {
-          <article class="card border-0 shadow-sm" [ngClass]="getCommentCardClasses(comment)">
+          <article class="card border-0" [ngClass]="getCommentCardClasses(comment)"
+                   style="background: var(--bg-surface); border: 1px solid var(--border-color) !important;">
             <div class="card-body">
               <p class="mb-2">{{ comment.content }}</p>
 
-              <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <small style="color: var(--text-muted);">
                   @if (comment.userId) {
-                    User: {{ comment.userEmail }}
+                    {{ comment.userEmail }}
                   } @else {
-                    User: Anonymous
+                    Anonymous
                   }
-                  | {{ comment.dateAdded | date: 'medium' }}
+                  · {{ comment.dateAdded | date: 'medium' }}
                 </small>
 
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-secondary"
-                  (click)="updateCommentPlaceholder(comment)"
-                  title="Update feature coming soon"
-                >
-                  Update
-                </button>
-
-                @if (canDeleteComment(comment)) {
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-danger ms-2"
-                    (click)="deleteComment(comment)"
-                    [disabled]="deletingCommentId() === comment.id"
-                  >
-                    @if (deletingCommentId() === comment.id) {
-                      Deleting...
-                    } @else {
-                      Delete
-                    }
-                  </button>
-                }
+                <div class="d-flex gap-2">
+                  @if (canDeleteComment(comment)) {
+                    <button type="button"
+                      class="btn btn-sm rounded-pill px-3"
+                      style="border: 1px solid rgba(239,68,68,0.3); color: #fca5a5;"
+                      (click)="deleteComment(comment)"
+                      [disabled]="deletingCommentId() === comment.id">
+                      @if (deletingCommentId() === comment.id) {
+                        Deleting...
+                      } @else {
+                        <i class="bi bi-trash me-1"></i>Delete
+                      }
+                    </button>
+                  }
+                </div>
               </div>
             </div>
           </article>

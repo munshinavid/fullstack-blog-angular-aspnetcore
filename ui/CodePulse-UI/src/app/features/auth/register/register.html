@@ -3,7 +3,7 @@
     <div class="col-md-5">
       <div class="card shadow-sm border-0">
         <div class="card-body p-4">
-          <h2 class="text-center mb-4 text-primary fw-bold">Create Account</h2>
+          <h2 class="text-center mb-4 fw-bold" style="color: var(--accent);">Create Account</h2>
 
           @if (errorMessage()) {
             <div class="alert alert-danger small py-2">
@@ -37,7 +37,7 @@
           </form>
 
           <div class="text-center mt-4">
-            <p class="text-muted small">
+            <p class="small" style="color: var(--text-muted);">
               Already have an account? <a routerLink="/login" class="text-decoration-none">Login here</a>
             </p>
           </div>

@@ -1,57 +1,63 @@
-<div class="container mt-4">
+<!-- Dark category list -->
+<div class="container mt-4 mb-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Categories</h2>
-    <a class="btn btn-primary" [routerLink]="['/admin/categories/add']">
-      Add Category
+    <h2 class="mb-0 fw-bold" style="color: var(--accent);">Categories</h2>
+    <a class="btn btn-sm rounded-pill px-4" [routerLink]="['/admin/categories/add']"
+       style="background: var(--accent); color: #fff; border: none;">
+      <i class="bi bi-plus me-1"></i>Add Category
     </a>
   </div>
 
-  <div class="card shadow-sm">
-    <div class="card-body">
+  <div class="card border-0" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
+    <div class="card-body p-0">
       @if (isLoading()) {
         <div class="text-center p-4">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="mt-2">Loading categories...</p>
+          <div class="spinner-border" style="color: var(--accent);" role="status"></div>
+          <p class="mt-2" style="color: var(--text-muted);">Loading categories...</p>
         </div>
       } 
       
       @else if (isError()) {
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger m-3" role="alert">
           <strong>Error!</strong> Failed to load categories. Please check your API.
         </div>
       } 
       
       @else {
-        <table class="table table-hover mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>Id</th>
-              <th>Name</th>
-              <th>URL Handle</th>
-              <th class="text-end">Actions</th>
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr style="background: var(--bg-surface);">
+              <th style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Id</th>
+              <th style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Name</th>
+              <th style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">URL Handle</th>
+              <th class="text-end pe-4" style="color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color);">Actions</th>
             </tr>
           </thead>
           <tbody>
             @for (category of categoryList(); track category.id) {
               <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>{{ category.urlHandle }}</td>
-                <td class="text-end">
+                <td style="color: var(--text-muted); font-size: 0.85rem;">{{ category.id }}</td>
+                <td class="fw-semibold">{{ category.name }}</td>
+                <td style="color: var(--text-secondary);">{{ category.urlHandle }}</td>
+                <td class="text-end pe-4">
                   <div class="btn-group">
-                    <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/categories/edit', category.id]">
-                      Edit
+                    <a class="btn btn-sm rounded-pill px-3 me-1" [routerLink]="['/admin/categories/edit', category.id]"
+                       style="border: 1px solid var(--border-color); color: var(--text-secondary);">
+                      <i class="bi bi-pencil me-1"></i>Edit
                     </a>
-                    <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(category.id.toString())">
-                      Delete
+                    <button class="btn btn-sm rounded-pill px-3" (click)="deleteCategory(category.id.toString())"
+                            style="border: 1px solid rgba(239,68,68,0.3); color: #fca5a5;">
+                      <i class="bi bi-trash me-1"></i>Delete
                     </button>
                   </div>
-              </td>
+                </td>
               </tr>
             } @empty {
               <tr>
-                <td colspan="4" class="text-center py-4 text-muted">
-                  No categories found.
+                <td colspan="4" class="text-center py-5">
+                  <div style="font-size: 2.5rem;" class="mb-2">📂</div>
+                  <p class="fw-semibold mb-1" style="color: var(--text-secondary);">No categories found</p>
+                  <p class="small mb-0" style="color: var(--text-muted);">Create your first category to organize posts.</p>
                 </td>
               </tr>
             }

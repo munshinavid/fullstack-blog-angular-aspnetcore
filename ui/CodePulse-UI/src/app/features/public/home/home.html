@@ -1,58 +1,37 @@
-<!--
-  Home Page Template — Contains Improvements #3, #5, #6, #8, #12
--->
-
-<!-- ============================================================
-     IMPROVEMENT #5: Hero Section with Gradient Background
-     ============================================================
-     Why: The original 'bg-light' hero looked like raw Bootstrap.
-     A gradient background instantly signals "custom design" and
-     makes the first impression much stronger.
-
-     Interview Tip: The gradient uses 135deg angle (diagonal).
-     You can explain how CSS gradients work —
-     linear-gradient(angle, color-stop-1, color-stop-2).
-     ============================================================ -->
+<!-- Hero Section -->
 <div class="hero-section py-5 mb-5">
   <div class="container text-center">
-    <h1 class="display-4 fw-bold mb-3 hero-title">
-      <!-- Split into two spans so we can color "Code" differently -->
-      <span class="hero-accent">Code</span>Pulse
+    <!-- Tagline pill -->
+    <span class="badge rounded-pill mb-3"
+          style="background: rgba(129,140,248,0.15); color: var(--accent); padding: 0.5rem 1rem; font-size: 0.8rem;">
+      ✦ Tech & Dev — Bangladesh
+    </span>
+    <!-- Display heading with serif flair -->
+    <h1 class="display-3 fw-bold mb-3 hero-title" style="font-family: 'Georgia', serif;">
+      Thoughts on <span class="hero-accent">Code,</span><br>
+      Craft & the Web
     </h1>
     <p class="lead hero-subtitle mx-auto" style="max-width: 600px;">
-      Exploring the world of technology, one post at a time.
+      A personal blog by Navid Munshi. Sharing experiments, tutorials,
+      and deep-dives from my CSE journey at AIUB.
     </p>
+    <a routerLink="/" fragment="posts" class="btn btn-sm rounded-pill px-4 py-2 mt-2"
+       style="background: var(--accent); color: #fff; border: none;">
+      Explore Posts →
+    </a>
   </div>
 </div>
 
-<div class="container mb-5">
+<div class="container mb-5" id="posts">
 
-  <!-- ============================================================
-       IMPROVEMENT #12: Loading Skeleton instead of plain spinner
-       ============================================================
-       Why: A spinner says "loading..." but gives no visual hint
-       about what's coming. Skeleton placeholders mimic the shape
-       of the actual content (cards in this case), which:
-       1. Reduces perceived loading time
-       2. Prevents layout shift (CLS — important for Core Web Vitals)
-       3. Looks more professional (used by YouTube, Facebook, LinkedIn)
-
-       How it works: CSS background-gradient animates left→right
-       creating a "shimmer" effect via @keyframes.
-
-       Interview Tip: This is called a "skeleton screen" or
-       "content placeholder" pattern. Google calls the metric it
-       helps with "Cumulative Layout Shift" (CLS).
-       ============================================================ -->
+  <!-- Skeleton loading -->
   @if (blogPostsResource.isLoading()) {
     <div class="row">
       @for (i of [1, 2, 3]; track i) {
         <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <!-- Skeleton image placeholder -->
-            <div class="skeleton" style="height: 200px; border-radius: 12px 12px 0 0;"></div>
+          <div class="card h-100 border-0">
+            <div class="skeleton" style="height: 200px; border-radius: 14px 14px 0 0;"></div>
             <div class="card-body">
-              <!-- Skeleton text lines mimicking date, title, description -->
               <div class="skeleton skeleton-text" style="width: 40%;"></div>
               <div class="skeleton skeleton-text" style="width: 85%;"></div>
               <div class="skeleton skeleton-text" style="width: 70%;"></div>
@@ -64,110 +43,85 @@
     </div>
   }
 
-  <!-- ❌ Error State -->
+  <!-- Error state -->
   @if (blogPostsResource.error()) {
     <div class="text-center py-5">
       <div class="mb-3" style="font-size: 3rem;">⚠️</div>
-      <h5 class="text-danger">Failed to load blog posts</h5>
-      <p class="text-muted small">Please check your connection and try again.</p>
+      <h5 style="color: #fca5a5;">Failed to load blog posts</h5>
+      <p class="small" style="color: var(--text-muted);">Please check your connection and try again.</p>
     </div>
   }
 
-  <!-- ✅ Data — Blog Post Cards -->
-  <div class="row">
+  <!-- Section header -->
+  @if (visibleBlogs().length) {
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="fw-bold mb-0">Latest Posts</h4>
+      <span class="small" style="color: var(--text-muted);">{{ visibleBlogs().length }} articles</span>
+    </div>
+  }
 
+  <!-- Blog cards -->
+  <div class="row">
     @for (post of visibleBlogs(); track post.id) {
       <div class="col-lg-4 col-md-6 mb-4">
-
-        <!-- ============================================================
-             IMPROVEMENT #6: Improved Blog Card Design
-             ============================================================
-             Changes from original:
-             1. Added .blog-card class for hover animation (already existed)
-             2. Image zooms slightly on hover (CSS transform on .card-img-top)
-             3. Category badges shown on each card (not just detail page)
-             4. Overflow hidden on image container to clip zoomed image
-
-             Interview Tip: The overflow:hidden on .position-relative
-             prevents the zoomed image from spilling outside the card.
-             This is a common CSS pattern for image hover effects.
-             ============================================================ -->
-        <div class="card h-100 shadow-sm border-0 blog-card">
-
-          <!-- Image container with overflow:hidden to clip zoom effect -->
+        <div class="card h-100 border-0 blog-card">
+          <!-- Image -->
           <div class="position-relative overflow-hidden">
-
-            <!-- Improvement #3: Fixed broken placeholder URL.
-                 via.placeholder.com is discontinued. Using placehold.co instead.
-                 Also added onerror fallback in case the uploaded image URL breaks. -->
-            <img [src]="post.featuredImgUrl || 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image'"
+            <img [src]="post.featuredImgUrl || 'https://placehold.co/600x400/1a1a3e/818cf8?text=No+Image'"
                  class="card-img-top"
                  [alt]="post.title"
                  style="height: 200px; object-fit: cover;"
-                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=No+Image';">
-
-            <!-- Author badge — positioned top-right over the image -->
-            <span class="badge bg-primary position-absolute top-0 end-0 m-3">
+                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/1a1a3e/818cf8?text=No+Image';">
+            <!-- Author badge -->
+            <span class="badge position-absolute top-0 end-0 m-3"
+                  style="background: rgba(129,140,248,0.9); color: #fff;">
               {{ post.author }}
             </span>
           </div>
 
           <div class="card-body">
-
-            <!-- Improvement #6: Category badges on cards (not just detail page) -->
+            <!-- Category badges -->
             <div class="mb-2">
               @for (cat of post.categories; track cat.id) {
-                <span class="badge bg-primary-subtle text-primary me-1 small">
+                <span class="badge me-1 small"
+                      style="background: rgba(129,140,248,0.12); color: var(--accent);">
                   {{ cat.name }}
                 </span>
               }
             </div>
 
-            <div class="text-muted small mb-2">
+            <div class="small mb-2" style="color: var(--text-muted);">
               <i class="bi bi-calendar3 me-1"></i>
               {{ post.publishedDate | date:'mediumDate' }}
             </div>
 
-            <h5 class="card-title fw-bold">
+            <h5 class="card-title fw-bold" style="color: var(--text-primary);">
               {{ post.title }}
             </h5>
 
-            <p class="card-text text-muted">
+            <p class="card-text" style="color: var(--text-secondary);">
               {{ post.description | slice:0:100 }}...
             </p>
-
           </div>
 
-          <div class="card-footer bg-white border-0 pb-4">
-            <a 
-              [routerLink]="['/blog', post.urlHandle]"
-              class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+          <div class="card-footer border-0 pb-4" style="background: transparent;">
+            <a [routerLink]="['/blog', post.urlHandle]"
+               class="btn btn-sm w-100 rounded-pill"
+               style="border: 1px solid var(--accent); color: var(--accent);">
               Read More →
             </a>
           </div>
-
         </div>
-
       </div>
     }
 
-    <!-- ============================================================
-         IMPROVEMENT #8: Empty State with Illustration
-         ============================================================
-         Why: "No blog posts found." as plain text looks broken.
-         Adding an emoji and a sub-message makes it feel intentional
-         and friendly — like the app is working correctly, just empty.
-
-         Interview Tip: Good UX always has "empty states" designed.
-         Apps like Slack, Notion, GitHub all have custom empty states.
-         ============================================================ -->
+    <!-- Empty state -->
     @empty {
       <div class="col-12 text-center py-5">
-        <div class="empty-state-icon mb-3">📝</div>
-        <h5 class="text-muted fw-semibold">No blog posts yet</h5>
-        <p class="text-muted small">Check back soon for new content!</p>
+        <div class="mb-3" style="font-size: 4rem;">📝</div>
+        <h5 class="fw-semibold" style="color: var(--text-secondary);">No blog posts yet</h5>
+        <p class="small" style="color: var(--text-muted);">Check back soon for new content!</p>
       </div>
     }
-
   </div>
 </div>

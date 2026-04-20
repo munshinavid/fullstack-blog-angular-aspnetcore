@@ -1,16 +1,15 @@
+<!-- Dark edit blogpost form -->
 <div class="container mt-4 mb-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0 text-primary">Update Blog Post</h2>
-    <a class="btn btn-outline-secondary" [routerLink]="['/admin/blogposts']">
-      Back to List
+    <h2 class="mb-0 fw-bold" style="color: var(--accent);">Update Blog Post</h2>
+    <a class="btn btn-sm rounded-pill px-3" [routerLink]="['/admin/blogposts']"
+       style="border: 1px solid var(--border-color); color: var(--text-secondary);">
+      <i class="bi bi-arrow-left me-1"></i>Back to List
     </a>
   </div>
 
-  <div class="card shadow-sm border-0">
+  <div class="card border-0" style="background: var(--bg-card); border: 1px solid var(--border-color) !important;">
     <div class="card-body p-4">
-      <!-- here Image selector Modal will be rendered dynamically when user clicks "Select / Upload Image" button.
-        It will emit the selected image URL back to this component, which will then update the featuredImgUrl form control with that URL,
-         allowing the user to see a preview of the selected image before submitting the form. -->
       <ng-container #imageSelectorHost></ng-container>
 
       @if (blogPost()) {
@@ -42,18 +41,19 @@
           <label class="form-label">Featured Image URL</label>
           <input type="text" class="form-control" formControlName="featuredImgUrl" placeholder="https://...">
           <div class="mt-2">
-            <button type="button" class="btn btn-outline-primary btn-sm" (click)="openImageSelector()">
-              Select / Upload Image
+            <button type="button" class="btn btn-sm rounded-pill px-3" (click)="openImageSelector()"
+                    style="border: 1px solid var(--accent); color: var(--accent);">
+              <i class="bi bi-image me-1"></i>Select / Upload Image
             </button>
           </div>
           
           @if (updateBlogPostForm.controls.featuredImgUrl.value) {
             <div class="mt-3 text-center">
-              <p class="text-muted small mb-2 text-start">Image Preview:</p>
+              <p class="small mb-2 text-start" style="color: var(--text-muted);">Image Preview:</p>
               <img [src]="updateBlogPostForm.controls.featuredImgUrl.value" 
                    alt="Preview" 
-                   class="rounded shadow-sm border img-fluid" 
-                   style="max-height: 250px; width: 100%; object-fit: cover;"
+                   class="rounded img-fluid" 
+                   style="max-height: 250px; width: 100%; object-fit: cover; border: 1px solid var(--border-color);"
                    (error)="onImgError($event)">
             </div>
           }
@@ -66,7 +66,7 @@
 
         <div class="mb-4">
           <label class="form-label fw-bold">Content</label>
-          <div class="NgxEditor__Wrapper border rounded">
+          <div class="NgxEditor__Wrapper border rounded" style="border-color: var(--border-color) !important;">
             <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
             <ngx-editor 
               [editor]="editor" 
@@ -103,16 +103,19 @@
         </div>
 
         <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn-danger px-4" (click)="onDelete()">
-            Delete Post
+          <!-- Outline delete — less aggressive -->
+          <button type="button" class="btn rounded-pill px-4" (click)="onDelete()"
+                  style="border: 1px solid rgba(239,68,68,0.3); color: #fca5a5;">
+            <i class="bi bi-trash me-1"></i>Delete Post
           </button>
           
-          <button type="submit" class="btn btn-primary px-4" [disabled]="updateBlogPostForm.invalid || isSubmitting()">
+          <button type="submit" class="btn rounded-pill px-4" [disabled]="updateBlogPostForm.invalid || isSubmitting()"
+                  style="background: var(--accent); color: #fff; border: none;">
             @if (isSubmitting()) {
-              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
               Updating...
             } @else {
-              Update Blog Post
+              <i class="bi bi-check2 me-1"></i>Update Blog Post
             }
           </button>
         </div>
@@ -120,8 +123,8 @@
       </form>
       } @else {
         <div class="text-center p-5">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="mt-2">Loading blog post data...</p>
+          <div class="spinner-border" style="color: var(--accent);" role="status"></div>
+          <p class="mt-2" style="color: var(--text-muted);">Loading blog post data...</p>
         </div>
       }
     </div>
