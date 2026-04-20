@@ -50,6 +50,6 @@ export class Home {
 
   constructor() {
     // Improvement #10: Set the page title on initialization
-    this.titleService.setTitle('CodePulse — Home');
+    this.titleService.setTitle('Navid Munshi');
   }
 }

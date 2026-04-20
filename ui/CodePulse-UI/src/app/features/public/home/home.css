@@ -5,9 +5,24 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-.hero-title { color: #e2e8f0; }
+.hero-title {
+  color: #e2e8f0;
+  letter-spacing: -1px;
+}
 .hero-accent { color: var(--accent); }
 .hero-subtitle { color: var(--text-secondary); }
+
+.hero-cta {
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(129, 140, 248, 0.24);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(129, 140, 248, 0.32);
+  filter: brightness(1.03);
+}
 
 /* Card hover lift + glow */
 .blog-card {

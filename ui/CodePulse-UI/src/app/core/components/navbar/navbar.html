@@ -2,8 +2,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top"
      style="background: var(--bg-surface); border-bottom: 1px solid var(--border-color);">
   <div class="container">
-    <a class="navbar-brand fw-bold" routerLink="/" style="color: var(--accent);">
-      <i class="bi bi-code-slash me-1"></i>Code Pulse
+    <a class="navbar-brand fw-bold text-light fst-italic" routerLink="/">
+      <i class="bi bi-code-slash me-1"></i>Navid Munshi
     </a>
     
     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -13,7 +13,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+          <a class="nav-link text-secondary" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </li>
 
         @if (user()?.roles?.includes('Admin')) {
