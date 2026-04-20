@@ -29,6 +29,17 @@
   transform: scale(1.05);
 }
 
+.read-more-btn {
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.read-more-btn:hover {
+  background-color: var(--accent);
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(129, 140, 248, 0.3);
+}
+
 /* Card title min-height for alignment */
 .card-title { min-height: 3rem; }
 
