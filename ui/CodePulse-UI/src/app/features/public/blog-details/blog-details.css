@@ -9,6 +9,11 @@
 .blog-content {
   color: var(--text-primary);
   line-height: 1.85;
+  max-width: 68ch;
+  margin: 0 auto;
+  font-size: 1.02rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Paragraphs */
@@ -50,6 +55,15 @@
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   color: var(--text-secondary);
+}
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  scroll-margin-top: 6rem;
 }
 
 /* Links */
@@ -219,4 +233,5 @@
   .meta-pill { font-size: 0.8rem; padding: 0.3rem 0.6rem; }
   .blog-content-wrapper { padding: 1rem !important; }
   .blog-content pre { padding: 0.8rem 1rem; font-size: 0.82rem; }
+  .blog-content { font-size: 0.98rem; }
 }

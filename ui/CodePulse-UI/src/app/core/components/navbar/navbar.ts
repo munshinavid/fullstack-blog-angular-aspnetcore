@@ -7,6 +7,7 @@ import { AuthService } from '../../../features/auth/services/auth-service';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './navbar.html',
+  styleUrl: './navbar.css',
 })
 export class Navbar {
   authService = inject(AuthService);

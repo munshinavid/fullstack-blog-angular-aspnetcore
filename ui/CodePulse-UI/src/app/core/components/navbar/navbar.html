@@ -33,15 +33,12 @@
       <div class="d-flex align-items-center gap-2">
         @if (user()) {
           <span class="small" style="color: var(--text-secondary);">{{ user()?.email }}</span>
-          <button class="btn btn-sm rounded-pill px-3"
-                  style="border: 1px solid var(--border-color); color: var(--text-secondary);"
+          <button class="btn btn-sm rounded-pill px-3 nav-auth-btn nav-logout-btn"
                   (click)="onLogout()">Logout</button>
         } 
         @else {
-          <a routerLink="/login" class="btn btn-sm rounded-pill px-4"
-             style="background: var(--accent); color: #fff; border: none;">Login</a>
-          <a routerLink="/register" class="btn btn-sm rounded-pill px-4"
-             style="border: 1px solid var(--accent); color: var(--accent);">Register</a>
+          <a routerLink="/login" class="btn btn-sm rounded-pill px-4 nav-auth-btn nav-login-btn">Login</a>
+          <a routerLink="/register" class="btn btn-sm rounded-pill px-4 nav-auth-btn nav-register-btn">Register</a>
         }
       </div>
     </div>
