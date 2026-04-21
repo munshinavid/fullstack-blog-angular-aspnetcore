@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using CodePulse.API.Data;
 using CodePulse.API.Exceptions;
 using CodePulse.API.Mappings;
@@ -22,6 +22,7 @@ Log.Logger = new LoggerConfiguration()
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    DotNetEnv.Env.Load();
 
     // 2. Clear default logging and use Serilog
     builder.Host.UseSerilog();
@@ -54,7 +55,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY") ?? builder.Configuration["Jwt:Key"]))
         };
 
         // টোকেনটি HttpOnly কুকি থেকে পড়ার জন্য ইভেন্ট সেট করা
@@ -118,7 +119,7 @@ app.UseStaticFiles();
 
 //cors
 app.UseCors(x => x
-.WithOrigins("http://localhost:4200") // Replace with your frontend URL
+.WithOrigins("https://blog.munshinavid.me", "http://localhost:4200") // Replace with your frontend URL
 .AllowAnyMethod()
 .AllowAnyHeader()
 .AllowCredentials());
