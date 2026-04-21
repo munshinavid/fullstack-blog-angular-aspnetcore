@@ -84,7 +84,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateBlogPostRequestValida
 
 //dbcontext
 builder.Services.AddDbContext<BlogDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BlogsConnectionString")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("BlogsConnectionString")));
 
 // Register AutoMapper with MappingProfile
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
@@ -102,6 +102,12 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+    dbContext.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 // 4. Register Exception Handler Middleware
