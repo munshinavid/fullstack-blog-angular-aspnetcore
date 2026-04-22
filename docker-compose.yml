@@ -6,7 +6,7 @@ services:
     container_name: codepulse-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: blog
+      POSTGRES_DB: blogdb
       POSTGRES_USER: codepulse_user
       POSTGRES_PASSWORD: codepulse_password
     ports:
@@ -14,7 +14,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U codepulse_user -d blog"]
+      test: ["CMD-SHELL", "pg_isready -U codepulse_user -d blogdb"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,7 +27,7 @@ services:
       - "7071:8080" # ASP.NET Core 8 defaults to port 8080 inside the container
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__BlogsConnectionString=Host=postgres;Port=5432;Database=blog;Username=codepulse_user;Password=codepulse_password
+      - ConnectionStrings__BlogsConnectionString=Host=postgres;Port=5432;Database=blogdb;Username=codepulse_user;Password=codepulse_password
     env_file:
       - ./api/CodePulse.API/.env
     depends_on:

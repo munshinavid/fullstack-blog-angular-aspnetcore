@@ -105,13 +105,24 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
-    dbContext.Database.Migrate();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<BlogDbContext>();
+        Log.Information("Applying migrations...");
+        dbContext.Database.Migrate();
+        Log.Information("Database migrated successfully.");
     }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "An error occurred while migrating the database.");
+        throw; // অ্যাপ্লিকেশনটি যাতে চালু না হয়
+    }
+}
 
-// Configure the HTTP request pipeline.
-// 4. Register Exception Handler Middleware
-app.UseExceptionHandler();
+    // Configure the HTTP request pipeline.
+    // 4. Register Exception Handler Middleware
+    app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
