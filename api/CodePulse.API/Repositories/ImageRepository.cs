@@ -40,10 +40,10 @@ namespace CodePulse.API.Repositories
                 await request.File.CopyToAsync(stream);
             }
 
-            // 🔥 build URL
+            // 🔥 build URL (Forcing HTTPS as requested)
             var httpRequest = httpContextAccessor.HttpContext.Request;
 
-            var url = $"{httpRequest.Scheme}://{httpRequest.Host}/images/{fileName}";
+            var url = $"https://{httpRequest.Host}/images/{fileName}";
 
             // save DB
             var blogImage = new BlogImage
