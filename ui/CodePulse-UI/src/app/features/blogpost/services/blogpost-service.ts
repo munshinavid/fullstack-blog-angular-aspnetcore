@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BlogPost, CreateBlogPostRequest, PagedResult } from '../models/blogpost.model';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 
 @Injectable({
