@@ -48,7 +48,7 @@ services:
     container_name: codepulse-pgadmin
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@codepulse.local
+      PGADMIN_DEFAULT_EMAIL: admin@myblog.com
       PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
       - "5050:80"
