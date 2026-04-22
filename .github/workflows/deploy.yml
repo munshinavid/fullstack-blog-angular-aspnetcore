@@ -1,0 +1,48 @@
+name: Deploy Fullstack App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # দরকার হলে ম্যানুয়ালি রান করার জন্য
+
+# একই সাথে একাধিক ডেপ্লয়মেন্ট যেন ড্রপলেটে প্রেশার না দেয়
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # ১. প্রজেক্ট ডিরেক্টরিতে প্রবেশ
+            cd /root/fullstack-blog-angular-aspnetcore
+
+            # ২. লেটেস্ট কোড সিঙ্ক করা (Safe Reset)
+            git fetch --all
+            git reset --hard origin/main
+
+            # ৩. এক লাইনে বিল্ড ও কন্টেইনার আপ করা
+            docker compose up -d --build --remove-orphans
+
+            # ৪. হেলথ চেক (অ্যাপ ঠিকমতো রান হয়েছে কি না দেখা)
+            echo "Waiting for the application to start..."
+            sleep 15
+            
+            # তোমার ব্যাকএন্ড যদি ৭০৭১ পোর্টে থাকে, তবে এটি চেক করবে
+            # সোয়াগার পেজ লোড না হলে ডেপ্লয়মেন্ট ফেইল দেখাবে
+            curl -f http://localhost:7071/weatherforecast || exit 1
+
+            # ৫. পুরনো অব্যবহৃত ইমেজ ডিলিট করে ড্রপলেটের স্পেস বাঁচানো
+            docker image prune -f
