@@ -22,8 +22,8 @@
 <summary><b>🏠 Home / Blog Feed</b></summary>
 <br>
 
-<!-- ![Home Page](./screenshots/home.png) -->
-> 📌 *Add screenshot here: `./screenshots/home.png`*
+![Home Page](./screenshots/home.png)
+<!-- > 📌 *Add screenshot here: `./screenshots/home.png`* -->
 
 </details>
 
@@ -31,8 +31,8 @@
 <summary><b>📖 Blog Post Detail (Markdown Rendered)</b></summary>
 <br>
 
-<!-- ![Blog Detail](./screenshots/blog-detail.png) -->
-> 📌 *Add screenshot here: `./screenshots/blog-detail.png`*
+![Blog Detail](./screenshots/blog-detail.png)
+<!-- > 📌 *Add screenshot here: `./screenshots/blog-detail.png`* -->
 
 </details>
 
@@ -40,8 +40,8 @@
 <summary><b>🔐 Login Page</b></summary>
 <br>
 
-<!-- ![Login](./screenshots/login.png) -->
-> 📌 *Add screenshot here: `./screenshots/login.png`*
+![Login](./screenshots/login.png)
+<!-- > 📌 *Add screenshot here: `./screenshots/login.png`* -->
 
 </details>
 
@@ -49,8 +49,8 @@
 <summary><b>📊 Admin Dashboard</b></summary>
 <br>
 
-<!-- ![Admin Dashboard](./screenshots/admin-dashboard.png) -->
-> 📌 *Add screenshot here: `./screenshots/admin-dashboard.png`*
+![Admin Dashboard](./screenshots/admin-dashboard.png)
+<!-- > 📌 *Add screenshot here: `./screenshots/admin-dashboard.png`* -->
 
 </details>
 
@@ -58,8 +58,8 @@
 <summary><b>✏️ Create / Edit Blog Post</b></summary>
 <br>
 
-<!-- ![Add Blog Post](./screenshots/add-blogpost.png) -->
-> 📌 *Add screenshot here: `./screenshots/add-blogpost.png`*
+![Add Blog Post](./screenshots/add-blogpost.png)
+<!-- > 📌 *Add screenshot here: `./screenshots/add-blogpost.png`* -->
 
 </details>
 
@@ -67,8 +67,8 @@
 <summary><b>🗂️ Category Management</b></summary>
 <br>
 
-<!-- ![Categories](./screenshots/categories.png) -->
-> 📌 *Add screenshot here: `./screenshots/categories.png`*
+![Categories](./screenshots/categories.png)
+<!-- > 📌 *Add screenshot here: `./screenshots/categories.png`* -->
 
 </details>
 
